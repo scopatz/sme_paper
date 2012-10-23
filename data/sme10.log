@@ -1,0 +1,53 @@
+INFO:root:header filename: cpp/enrichment_symbolic.h
+INFO:root:source filename: cpp/enrichment_symbolic10.cpp
+INFO:root:language: C++
+INFO:root:maximum number of components: 10
+INFO:root:debug enabled: False
+INFO:root:generating 3 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 16718 ops to 1407
+  completed in 63.4 s
+
+INFO:root:generating 4 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 20956 ops to 1925
+  completed in 93.1 s
+
+INFO:root:generating 5 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 25194 ops to 1840
+  completed in 143 s
+
+INFO:root:generating 6 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 29432 ops to 2191
+  completed in 186 s
+
+INFO:root:generating 7 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 33670 ops to 2399
+  completed in 223 s
+
+INFO:root:generating 8 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 37908 ops to 3759
+  completed in 253 s
+
+INFO:root:generating 9 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 42146 ops to 3607
+  completed in 358 s
+
+INFO:root:generating 10 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 46384 ops to 4041
+  completed in 423 s
+
