@@ -1,0 +1,23 @@
+INFO:root:header filename: cpp/enrichment_symbolic.h
+INFO:root:source filename: cpp/enrichment_symbolic05.cpp
+INFO:root:language: C++
+INFO:root:maximum number of components: 5
+INFO:root:debug enabled: False
+INFO:root:generating 3 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 16718 ops to 1407
+  completed in 39.2 s
+
+INFO:root:generating 4 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 20956 ops to 1925
+  completed in 57.1 s
+
+INFO:root:generating 5 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 25194 ops to 1840
+  completed in 86.9 s
+
