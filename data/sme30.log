@@ -1,0 +1,173 @@
+INFO:root:header filename: cpp/enrichment_symbolic.h
+INFO:root:source filename: cpp/enrichment_symbolic30.cpp
+INFO:root:language: C++
+INFO:root:maximum number of components: 30
+INFO:root:debug enabled: False
+INFO:root:generating 3 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 16718 ops to 1407
+  completed in 63.2 s
+
+INFO:root:generating 4 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 20956 ops to 1925
+  completed in 93.3 s
+
+INFO:root:generating 5 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 25194 ops to 1840
+  completed in 144 s
+
+INFO:root:generating 6 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 29432 ops to 2191
+  completed in 186 s
+
+INFO:root:generating 7 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 33670 ops to 2399
+  completed in 224 s
+
+INFO:root:generating 8 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 37908 ops to 3759
+  completed in 256 s
+
+INFO:root:generating 9 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 42146 ops to 3607
+  completed in 358 s
+
+INFO:root:generating 10 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 46384 ops to 4041
+  completed in 423 s
+
+INFO:root:generating 11 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 50622 ops to 4454
+  completed in 539 s
+
+INFO:root:generating 12 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 54860 ops to 5271
+  completed in 566 s
+
+INFO:root:generating 13 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 59098 ops to 6346
+  completed in 683 s
+
+INFO:root:generating 14 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 63336 ops to 6328
+  completed in 645 s
+
+INFO:root:generating 15 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 67574 ops to 6429
+  completed in 810 s
+
+INFO:root:generating 16 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 71812 ops to 6641
+  completed in 890 s
+
+INFO:root:generating 17 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 76050 ops to 7081
+  completed in 1.33E+03 s
+
+INFO:root:generating 18 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 80288 ops to 7578
+  completed in 1.14E+03 s
+
+INFO:root:generating 19 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 84526 ops to 7675
+  completed in 1.49E+03 s
+
+INFO:root:generating 20 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 88764 ops to 11902
+  completed in 2.55E+03 s
+
+INFO:root:generating 21 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 93002 ops to 8302
+  completed in 1.75E+03 s
+
+INFO:root:generating 22 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 97240 ops to 9850
+  completed in 1.64E+03 s
+
+INFO:root:generating 23 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 101478 ops to 8940
+  completed in 1.92E+03 s
+
+INFO:root:generating 24 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 105716 ops to 9321
+  completed in 1.88E+03 s
+
+INFO:root:generating 25 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 109954 ops to 9884
+  completed in 2.39E+03 s
+
+INFO:root:generating 26 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 114192 ops to 10668
+  completed in 2.98E+03 s
+
+INFO:root:generating 27 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 118430 ops to 10765
+  completed in 2.76E+03 s
+
+INFO:root:generating 28 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 122668 ops to 11012
+  completed in 2.7E+03 s
+
+INFO:root:generating 29 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 126906 ops to 11416
+  completed in 3.16E+03 s
+
+INFO:root:generating 30 component enrichment
+  order-2 NP approximation
+  minimizing ops by eliminating common sub-expressions
+    reduced 131144 ops to 11874
+  completed in 3.03E+03 s
+
