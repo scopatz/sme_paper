@@ -1,0 +1,78 @@
+\documentclass[preprint,12pt]{elsarticle}
+
+%General Short-Cut Commands
+\newcommand{\superscript}[1]{\ensuremath{^{\textrm{#1}}}}
+\newcommand{\subscript}[1]{\ensuremath{_{\textrm{#1}}}}
+\newcommand{\nuc}[2]{\superscript{#2}{#1}}
+
+\usepackage{natbib}
+%\bibpunct[,]{[}{]}{;}{a}{,}{,}
+\bibliographystyle{model2-names}
+
+% Needed for making certian figures
+\usepackage{color}
+\usepackage{tikz}
+\usepackage{verbatim}
+\usetikzlibrary{shapes,arrows}
+
+\journal{Some Separations Journal}
+
+% Start this document...
+\begin{document}
+
+% Article commands
+\begin{frontmatter}
+\title{Symbolic Multicomponent Enrichment for Matched Abundance Ratio Cascades}
+
+\author[chi]{Anthony M. Scopatz\corref{cor1}}
+\ead{scopatz@flash.uchicago.edu}
+\cortext[cor1]{Corresponding author}
+
+\address[chi]{The University of Chicago, The FLASH Center, 
+              5754 S. Ellis Ave, Chicago, IL, 60637}
+
+
+% Text of abstract
+\begin{abstract}
+Some abstract text
+\end{abstract}
+
+%% keywords here, in the form: keyword \sep keyword
+\begin{keyword}
+%% MSC codes here, in the form: \MSC code \sep code
+%% or \MSC[2008] code \sep code (2000 is the default)
+\end{keyword}
+
+\end{frontmatter}
+
+
+%
+% Begin real text
+%
+
+\section{Introduction}
+\label{sec:intro}
+Symbolic evaluation is slow, except...
+
+
+\section{Symbolic Methodology}
+\label{sec:meth}
+
+\subsection{MARC Equations}
+\label{sec:marceq}
+
+\subsection{Code Generation Pipeline}
+\label{sec:codegen}
+
+\subsection{Symbolic Enrichment Solver}
+\label{sec:symes}
+
+\section{Results \& Profiling}
+\label{sec:res}
+
+
+\section{Conclusions \& Future Work}
+\label{sec:conc}
+
+
+\end{document}
