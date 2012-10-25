@@ -4,6 +4,9 @@
 \newcommand{\superscript}[1]{\ensuremath{^{\textrm{#1}}}}
 \newcommand{\subscript}[1]{\ensuremath{_{\textrm{#1}}}}
 \newcommand{\nuc}[2]{\superscript{#2}{#1}}
+\newcommand{\ith}[0]{$i$\superscript{th}}
+\newcommand{\jth}[0]{$j$\superscript{th}}
+\newcommand{\kth}[0]{$k$\superscript{th}}
 
 \usepackage{natbib}
 %\bibpunct[,]{[}{]}{;}{a}{,}{,}
@@ -106,6 +109,32 @@ Higher order cascades will be displayed in \S \ref{sec:res}.
 
 \subsection{MARC Equations}
 \label{sec:marceq}
+
+Call $N$ the total number of stages in an enrichment cascade, $N_P$ the number of 
+product (enriching) stages above the feed entry, and $N_T$ the number of tails
+(stripping) stages below the feed point such that:
+\begin{equation}
+N = N_P + N_T
+\end{equation}
+Furthermore, MARC requires that we declare a species to enrich in the 
+product (P).  This is known as the first key component an is denoted here as
+$j$.  There must also be a second key component $k$ from which $j$ is 
+separated. Thus $k$ is more abundant in the tails stream (T).
+
+The ovearll stage separation factor $\alpha$ [unitless] represents the per mass 
+enrichment ratio from one stage to the next.  This yeilds component-specific
+stage separation factors $\beta_i$ for the \ith component of a mixture $I$:
+\begin{equation}
+\beta_i = \alpha^{M^* - M_i}
+\label{beta_i}
+\end{equation}
+In equation \ref{beta_i}, $M_i$ represents the molecular weight [amu] of the \ith
+species while $M^*$ is an optimization parameter.  An initial first guess for 
+$M^*$ is given by the average of the molecular weights of the key components:
+\begin{equation}
+M^* = \frac{1}{2}\left(M_j + M_k\right)
+\end{equation}
+Therefore $M^*$ is bounded such that $M^*\in[M_j,M_k]$ when minimizing $L_t/F$.
 
 \subsection{Code Generation Pipeline}
 \label{sec:codegen}
