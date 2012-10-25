@@ -57,6 +57,38 @@ Symbolic evaluation is slow, except...
 
 \section{Symbolic Methodology}
 \label{sec:meth}
+At its core, the solution to coupled multicomponent enrichment cascade equations is
+a minimization problem \cite{Wood1999}.  In a matched abundance ratio 
+\cite{DelaGarza1969} cascade this is often cast as the minimization of 
+the total flow rate $L_t$ through the system normalized by the feed flow rate $F$ to 
+form the positive and unitless optimization variable $L_t/F$.  Traditionally, 
+minimizing this parameter as a function of other cascade state variables has been 
+performed eiether via off-the-shelf optimization libraries CITEtog or custom built solvers CITEbright.
+
+However, both of these approaches rely on writing code idiomatic to language in which
+it is written.  For example, many numerical constraint optimizers, in order to handle
+the case of arbiratily complex expressions, accept as their primary argument a 
+function object or pointer.  Then for every iteration the optimizer must call the 
+function to be optimized.  This involves (in compiled languages) setting up a new
+stack and allocating new memory for every solver iteration.  While good optimizers
+will be effieicnt in terms of the number of function calls they make, there is no
+way for them to avoid multiple function calls and remain sufficiently general.
+The number of function calls that are needed scales \emph{at least} linearly with the 
+number of equations in the system.
+
+On the other hand, if it is possible to convert the system of equations 
+into a single expression -- no matter how complicated -- then the problem has been 
+recast into the optimization of a single fucntion over a single variable.   This 
+may be easily handed off to any number of well known algorithims, such as Newton's
+method, the secant method, or the bisection method.  In such a form, the solution 
+will have a vastly reduced computational overhead as compared to standard 
+numerical solvers. 
+
+Naturally, performing the above variable substitution and elimination to obtain a 
+single expression is difficult in most cases and mathematically impossible in others.
+For MARC systems, as is shown in \S \ref{sec:symes}, the
+
+
 
 \subsection{MARC Equations}
 \label{sec:marceq}
@@ -70,9 +102,9 @@ Symbolic evaluation is slow, except...
 \section{Results \& Profiling}
 \label{sec:res}
 
-
 \section{Conclusions \& Future Work}
 \label{sec:conc}
 
+\bibliography{refs}
 
 \end{document}
