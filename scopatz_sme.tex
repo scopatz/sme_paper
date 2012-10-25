@@ -128,13 +128,15 @@ stage separation factors $\beta_i$ for the \ith component of a mixture $I$:
 \beta_i = \alpha^{M^* - M_i}
 \label{beta_i}
 \end{equation}
-In equation \ref{beta_i}, $M_i$ represents the molecular weight [amu] of the \ith
-species while $M^*$ is an optimization parameter.  An initial first guess for 
+Here, $M_i$ represents the molecular weight [amu] of the \ith
+species while $M^*$ [amu] is an optimization parameter.  An initial first guess for 
 $M^*$ is given by the average of the molecular weights of the key components:
 \begin{equation}
 M^* = \frac{1}{2}\left(M_j + M_k\right)
 \end{equation}
-Therefore $M^*$ is bounded such that $M^*\in[M_j,M_k]$ when minimizing $L_t/F$.
+By convention, $j$ \& $k$ are chosen such that $M_j < M_k$ and 
+therefore $M^*$ is bounded on the range $M^*\in[M_j,M_k]$ when minimizing $L_t/F$.
+
 
 \subsection{Code Generation Pipeline}
 \label{sec:codegen}
