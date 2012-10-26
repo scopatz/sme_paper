@@ -63,8 +63,8 @@ Symbolic evaluation is slow, except...
 At its core, the solution to coupled multicomponent enrichment cascade equations is
 a minimization problem \cite{Wood1999}.  In a matched abundance ratio 
 \cite{DelaGarza1969} cascade this is often cast as the minimization of 
-the total flow rate $L_t$ through the system normalized by the feed flow rate $F$ to 
-form the positive and unitless optimization variable $L_t/F$.  Traditionally, 
+the total flow rate $L$ through the system normalized by the feed flow rate $F$ to 
+form the positive and unitless optimization variable $L/F$.  Traditionally, 
 minimizing this parameter as a function of other cascade state variables has been 
 performed eiether via off-the-shelf optimization libraries 
 \cite{doi:10.1080/01496391003793884} or custom built solvers CITEpyne.
@@ -90,7 +90,7 @@ numerical solvers.
 
 Naturally, performing the above variable substitution and elimination to obtain a 
 single expression is difficult in many cases and mathematically impossible in most 
-others.  For MARC systems, as is shown in \S \ref{sec:symes}, reduction of $L_t/F$
+others.  For MARC systems, as is shown in \S \ref{sec:symes}, reduction of $L/F$
 to a single expression is possible.
 
 Rather than phrasing this as a numerical optimization problem from the start, the 
@@ -133,9 +133,10 @@ species while $M^*$ [amu] is an optimization parameter.  An initial first guess 
 $M^*$ is given by the average of the molecular weights of the key components:
 \begin{equation}
 M^* = \frac{1}{2}\left(M_j + M_k\right)
+\label{mstar-guess}
 \end{equation}
 By convention, $j$ \& $k$ are chosen such that $M_j < M_k$ and 
-therefore $M^*$ is bounded on the range $M^*\in[M_j,M_k]$ when minimizing $L_t/F$.
+therefore $M^*$ is bounded on the range $M^*\in[M_j,M_k]$ when minimizing $L/F$.
 
 Let $F$, $P$, and $T$ be the feed, product, and tails mass flow rates subject to 
 the conservation equation:
@@ -177,10 +178,12 @@ product and tails streams as a function of the feed concentrations.
 \begin{equation}
 x_i^P = \frac{x_i^F}{\frac{P}{F}}\cdot\frac{\beta_i^{N_T+1} - 1}
                                            {\beta_i^{N_T+1} - \beta_i^{-N_P}}
+\label{prod-concentration}
 \end{equation}
 \begin{equation}
 x_i^T = \frac{x_i^F}{\frac{T}{F}}\cdot\frac{1 - \beta_i^{-N_P}}
                                            {\beta_i^{N_T+1} - \beta_i^{-N_P}}
+\label{tail-concentration}
 \end{equation}
 By analogy to equation \ref{total-flow-constraint}, the components themselves are
 also subject to mass conservation:
@@ -201,6 +204,51 @@ R^T = \frac{x_j^T}{x_k^T}
 The ratios in equation \ref{abund_ratios} are valid for the three stages in the 
 cascade that are most important: the feed entry point, the final product, and the 
 last tails stage.
+
+Finally, the total flow rate per unit feed for a given cascade is computed by 
+the following expression:
+\begin{equation}
+\frac{L}{F} = \sum_i^I \frac{\frac{P}{F}x_i^P\ln(R^P) + \frac{T}{F}x_i^T\ln(R^T) 
+                                                      - x_i^F\ln(R^F)}
+                            {\ln(\beta_j)\frac{\beta_i - 1.0}{\beta_i + 1.0}}
+\label{ltot-over-feed}
+\end{equation}
+To solve for the optimal cascade, equation \ref{ltot-over-feed} must be minimized
+with respect to its constituent independent variables.
+
+Suppose that the cascade parameters 
+$\alpha$, $M_i$ for all $i$, $x_i^F$ for all $i$, $j$ (e.g. \nuc{U}{235}), $k$ 
+(e.g. \nuc{U}{238}), the key target product enrichment $x_j^P$, and the key target 
+tails enrichment $x_j^T$ are all given.  The optimal cascade is thus characterized by 
+the system of equations below. This system has three equations and three unknowns --
+$N_P$, $N_T$, and $M^*$ -- and is therefore well determined.
+\begin{equation}
+\frac{x_j^P}{x_j^F}\cdot\frac{P}{F} - \frac{\beta_j^{N_T+1} - 1}
+                                           {\beta_j^{N_T+1} - \beta_j^{-N_P}} = 0
+\label{prod-constraint}
+\end{equation}
+\begin{equation}
+\left(\frac{x_j^F}{\frac{T}{F}} \cdot \frac{1 - \beta_i^{-N_P}}
+                                           {\beta_j^{N_T+1} - \beta_j^{-N_P}} \right)
+- \left(x_j^T\cdot\sum_i^{I} x_i^T\right) = 0
+\label{tail-constraint}
+\end{equation}
+\begin{equation}
+\min\left(\frac{L}{F}\right)\to \frac{d}{dM^*} \frac{L}{F} = 0
+\label{minlt-constraint}
+\end{equation}
+Equation \ref{prod-constraint} is a rearrangement of equation \ref{prod-concentration}
+when evaluated for the \jth key component, whose target product erichment is assumed
+known.  Equation \ref{tail-constraint} is garnered via equations \ref{tpf-full} \&
+\ref{tail-concentration} and once again evaluated for the \jth key component.
+Equation \ref{minlt-constraint} falls out of the extreme value theorem of calculus
+applied to equation \ref{ltot-over-feed}.
+
+To solve equations \ref{prod-constraint}-\ref{minlt-constraint}, initial guesses
+for the number of product and tails stages, $N_P^0$ and $N_T^0$, must be given.
+An initial guess for $M*$ is provided in equation \ref{mstar-guess}.  Once this system
+of equations is known, the product and tails concentrations for all components may be 
+solved with equations \ref{prod-concentration} \& \ref{tail-concentration}.
 
 \subsection{Code Generation Pipeline}
 \label{sec:codegen}
