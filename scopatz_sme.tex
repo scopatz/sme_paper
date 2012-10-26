@@ -109,6 +109,13 @@ Higher order cascades will be displayed in \S \ref{sec:res}.
 
 \subsection{MARC Equations}
 \label{sec:marceq}
+The algorithm with which to compute matched abunance ratio cascades has been 
+detailed previously in a vareity sources, dating back to de la Garza in the
+1960s. However, the fundementals of this method are reviewed here both as a formal
+statement of the problem and as a way to introduce the terminology used throughout 
+the rest of this paper.  For more information please refer to de la Garza
+\cite{DelaGarza1969}, von Halle \cite{VonHalle1987}, Wood \cite{Wood1999}, or 
+Song \cite{doi:10.1080/01496391003793884}.
 
 Call $N$ the total number of stages in an enrichment cascade, $N_P$ the number of 
 product (enriching) stages above the feed entry, and $N_T$ the number of tails
@@ -217,8 +224,11 @@ To solve for the optimal cascade, equation \ref{ltot-over-feed} must be minimize
 with respect to its constituent independent variables.
 
 Suppose that the cascade parameters 
-$\alpha$, $M_i$ for all $i$, $x_i^F$ for all $i$, $j$ (e.g. \nuc{U}{235}), $k$ 
-(e.g. \nuc{U}{238}), the key target product enrichment $x_j^P$, and the key target 
+$\alpha$, 
+$j$, $k$, 
+$M_i$ for all $i$, 
+$x_i^F$ for all $i$, 
+the key product enrichment $x_j^P$, and the key 
 tails enrichment $x_j^T$ are all given.  The optimal cascade is thus characterized by 
 the system of equations below. This system has three equations and three unknowns --
 $N_P$, $N_T$, and $M^*$ -- and is therefore well determined.
@@ -238,7 +248,7 @@ $N_P$, $N_T$, and $M^*$ -- and is therefore well determined.
 \label{minlt-constraint}
 \end{equation}
 Equation \ref{prod-constraint} is a rearrangement of equation \ref{prod-concentration}
-when evaluated for the \jth key component, whose target product erichment is assumed
+when evaluated for the \jth key component, whose product erichment is assumed
 known.  Equation \ref{tail-constraint} is garnered via equations \ref{tpf-full} \&
 \ref{tail-concentration} and once again evaluated for the \jth key component.
 Equation \ref{minlt-constraint} falls out of the extreme value theorem of calculus
