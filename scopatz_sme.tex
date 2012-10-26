@@ -117,9 +117,9 @@ product (enriching) stages above the feed entry, and $N_T$ the number of tails
 N = N_P + N_T
 \end{equation}
 Furthermore, MARC requires that we declare a species to enrich in the 
-product (P).  This is known as the first key component an is denoted here as
-$j$.  There must also be a second key component $k$ from which $j$ is 
-separated. Thus $k$ is more abundant in the tails stream (T).
+product (subscript P).  This is known as the first key component an is denoted 
+here as $j$.  There must also be a second key component $k$ from which $j$ is 
+separated. Thus $k$ is more abundant in the tails stream (subscript T).
 
 The ovearll stage separation factor $\alpha$ [unitless] represents the per mass 
 enrichment ratio from one stage to the next.  This yeilds component-specific
@@ -136,6 +136,58 @@ M^* = \frac{1}{2}\left(M_j + M_k\right)
 \end{equation}
 By convention, $j$ \& $k$ are chosen such that $M_j < M_k$ and 
 therefore $M^*$ is bounded on the range $M^*\in[M_j,M_k]$ when minimizing $L_t/F$.
+
+Let $F$, $P$, and $T$ be the feed, product, and tails mass flow rates subject to 
+the conservation equation:
+\begin{equation}
+F = P + T
+\label{total-flow-constraint}
+\end{equation}
+Also let $x$ denote a normalized mass concentration vector such that $x_i^F$, 
+$x_i^P$, $x_i^T$ are the concetrations of the \ith component of the feed, product,
+and tails respectively.  Thus:
+\begin{equation}
+1 = \sum_i^I x_i^F = \sum_i^I x_i^P = \sum_i^I x_i^T 
+\end{equation}
+Therefore the flow rate ratios are:
+\begin{equation}
+\frac{P}{F} = \sum_i^I x_i^F\frac{\beta_i^{N_T+1} - 1}
+                                 {\beta_i^{N_T+1} - \beta_i^{-N_P}}
+\label{ppf-full}
+\end{equation}
+\begin{equation}
+\frac{T}{F} = \sum_i^I x_i^F\frac{1 - \beta_i^{-N_P}}
+                                 {\beta_i^{N_T+1} - \beta_i^{-N_P}}
+\label{tpf-full}
+\end{equation}
+Equations \ref{ppf-full} \&  \ref{tpf-full} can be further reduced to functions
+of just the first key component:
+\begin{equation}
+\frac{P}{F} = \frac{x_j^F - x_j^T}{x_j^P - x_j^T}
+\label{ppf-key}
+\end{equation}
+\begin{equation}
+\frac{T}{F} = \frac{x_j^F - x_j^P}{x_j^T - x_j^P}
+\label{tpf-key}
+\end{equation}
+
+Either equations \ref{ppf-full} \& \ref{tpf-full} or equations \ref{ppf-key} \& 
+\ref{tpf-key} allow the calculation of the \ith component concentrations of in the 
+product and tails streams as a function of the feed concentrations.
+\begin{equation}
+x_i^P = \frac{x_i^F}{\frac{P}{F}}\cdot\frac{\beta_i^{N_T+1} - 1}
+                                           {\beta_i^{N_T+1} - \beta_i^{-N_P}}
+\end{equation}
+\begin{equation}
+x_i^T = \frac{x_i^F}{\frac{T}{F}}\cdot\frac{1 - \beta_i^{-N_P}}
+                                           {\beta_i^{N_T+1} - \beta_i^{-N_P}}
+\end{equation}
+By analogy to equation \ref{total-flow-constraint}, the components themselves are
+also subject to mass conservation:
+\begin{equation}
+x_i^FF = x_i^PP + x_i^TT
+\label{comp-flow-constraint}
+\end{equation}
 
 
 \subsection{Code Generation Pipeline}
