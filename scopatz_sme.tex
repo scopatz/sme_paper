@@ -8,6 +8,17 @@
 \newcommand{\jth}[0]{$j$\superscript{th}}
 \newcommand{\kth}[0]{$k$\superscript{th}}
 
+% New definition of square root:
+% it renames \sqrt as \oldsqrt
+\let\oldsqrt\sqrt
+% it defines the new \sqrt in terms of the old one
+\def\sqrt{\mathpalette\DHLhksqrt}
+\def\DHLhksqrt#1#2{%
+\setbox0=\hbox{$#1\oldsqrt{#2\,}$}\dimen0=\ht0
+\advance\dimen0-0.2\ht0
+\setbox2=\hbox{\vrule height\ht0 depth -\dimen0}%
+{\box0\lower0.4pt\box2}}
+
 \usepackage{natbib}
 %\bibpunct[,]{[}{]}{;}{a}{,}{,}
 \bibliographystyle{model2-names}
@@ -385,6 +396,56 @@ in equation \ref{tail-constraint}.}
 \end{center}
 \end{figure}
 
+Instead, $f(N_P,M^*)$ was plotted as an unconstrained function of its two remaining 
+indpendent variables to produce the heat map that may be seen in Figure 
+\ref{np_contraint_fig}.  Since the range of $f$ contains both positive and negative
+values, it follows that there must be some combination of $(N_P,M^*)$ values which
+satisfy the original MARC constraint.  This set is displayed on Figure 
+\ref{np_contraint_fig} as the black contour.  While this countour could hypothetically
+be used itself to provide a closed form $N_P(M^*)$ equation, such a strategy would 
+be grossly inefficient.  This is because a large number of $f$ points must be 
+numerically evaluated, and then linerally interpoltated, to fit such a curve with
+respectable accuracy.
+
+Rather, by inspection of Figure \ref{np_contraint_fig}, the $f(N_P, M^*)=0$ curve 
+would be well fit by a second order polynomial -- at least on the domain of interest.
+That the constraint follows this form is not obvious from either equation 
+\ref{tail-constraint} or $f(N_P,M^*)$.  Once again, however, the coefficients in 
+such a second order polynomial model cannot be known numerically and must be 
+expressed symbolically in terms of known and independent variables.
+
+On these grounds, represent $f$ by its second order Taylor series expansion with
+respect to $N_P$ close to the inital guess $N_P^0$.
+\begin{equation}
+\begin{array}{rcl}
+f(N_P,M^*) & \approx &f(N_P^0,M^*) \\
+& & + \left(N_P -N_P^0\right)\left.\frac{df}{dN_P}\right|_{N_P=N_P^0} \\
+& & + \frac{\left(N_P -N_P^0\right)^2}{2}\cdot\left.\frac{d^2f}{(dN_P)^2}\right|_{N_P=N_P^0}\\
+\end{array}
+\label{f-taylor}
+\end{equation}
+This may be refactored with the introduction of coefficients $a$, $b$, and $c$ into 
+the canonical form,
+\begin{equation}
+\begin{array}{rcl}
+f(N_P,M^*) & = & a(N_P)^2 + bN_P + c\\
+a & = & \frac{1}{2}\cdot\frac{d^2f}{(dN_P)^2}\\
+b & = & \left.\frac{df}{dN_P}\right|_{N_P=N_P^0} - N_P^0\frac{d^2f}{(dN_P)^2} \\
+c & = & f(N_P^0,M^*) - N_P^0\cdot\frac{df}{dN_P} + \frac{(N_P^0)^2}{2}\frac{d^2f}{(dN_P)^2} \\
+\end{array}
+\label{f-cannon}
+\end{equation}
+where all derivatives in equation \ref{f-cannon} are evaluated at $N_P=N_P^0$.
+Applying the constraint $f(N_P,M^*)=0$, 
+a closed form expression $N_P(M^*)$ is trivially solved for via the 
+quadradic equation.
+\begin{equation}
+N_P(M^*) = \frac{-b - \sqrt{b^2 - 4ac}}{2a}
+\end{equation}
+Note that for this approximation $a$ is always positive, $b$ is always negative, 
+and the discrminant inside the sqaure root is always posiitve.  Therefore only the 
+negative solution to the quadratic is needed to obtain a well-bounded result for
+$N_P(M^*)$.
 
 \subsection{Code Generation Pipeline}
 \label{sec:codegen}
