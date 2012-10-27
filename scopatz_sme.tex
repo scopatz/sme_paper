@@ -504,6 +504,32 @@ in \S \ref{sec:codegen}.
 \subsection{Code Generation Pipeline}
 \label{sec:codegen}
 
+Up until this point, all symbolic computations and manipulations have taken place
+within SymPy.  For large numbers of operations -- such as the final expression for
+$L/F(M^*)$ in \S\ref{sec:symes} -- SymPy becomes memory bound.  Therefore any 
+minimization performed with SymPy would have unnessicaraly large overhead and would
+not be computationally efficient.  For most symbolic solvers, this is where
+methodolgy development ends.  Either the computation is small enough to not hit
+memory limits and the calculation may proceed or it is too big and the evaluation
+becomes untenable.  For the solver presented here, however, the computational 
+pipeline is only in its initial step.
+
+Symbolic mathematics libraries are ``slow'' and have a relatively large memory 
+footprint because they must retain all operational information about an expression.
+This is in preparation for possible further symbolic manipulation.  Numerical 
+reduction and evaluation comes only when explicitly requested as it destroys the 
+symbolic relationships.
+
+Still, by the point that an expression for $L/F(M^*)$ has been determined, the 
+desire to reatian the symbolic relationships is strongly outweighted by the hope
+for fast execution times.  The system of equations has been solved and no further
+symoblic manipulations will occur.
+
+Somethign which freezes symbolic relationships is a compiler.
+
+non-idiomatic
+
+
 \section{Results \& Profiling}
 \label{sec:res}
 
