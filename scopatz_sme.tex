@@ -246,7 +246,7 @@ $N_P$, $N_T$, and $M^*$ -- and is therefore well determined.
 \label{tail-constraint}
 \end{equation}
 \begin{equation}
-\min\left(\frac{L}{F}\right)\to \frac{d}{dM^*} \frac{L}{F} = 0
+\min\left[\frac{L}{F}\right]\to \frac{d}{dM^*} \frac{L}{F} = 0
 \label{minlt-constraint}
 \end{equation}
 Equation \ref{prod-constraint} is a rearrangement of equation \ref{prod-concentration}
@@ -276,6 +276,9 @@ to one equation (with potentiall many substitutions) as a function of one unknow
 The symbolic MARC algorithm here relies on eliminating the $N_P$ and $N_T$ variables
 from equations \ref{prod-constraint}-\ref{minlt-constraint}. This produces a single
 expression for $L/F$, which may be handed to a traditional minimization algorithm.
+Still, the strategy for devising a successful symbolic solver for a given system
+of equations is distinct from the normal mechnisms used when engineering numeric 
+solutions.
 
 Unlike numeric solvers where every expression is evaluated with an integer, real, or
 complex number as it is encountered, symbolic computation represents and stores all 
@@ -289,7 +292,21 @@ opperations in the resultant expression after their application (e.g. the chain 
 So while the quintessential strategy in numerical evaluators is to mitigate error
 steming from floating point arithmetic, a symbolic solver seeks to minimize the total
 number of irreducible operation ($+, -, \times, /, \%, \log, \sin, \mbox{abs},$ etc.) 
-which must be perfomed to compute a complex expression.
+which must be perfomed to compute a complex expression.  Hence much of the variable
+elimination below also attempts to simeltaneously curtail the overall operation count. 
+
+To start, consider the constraint in equation \ref{prod-constraint} and the number
+of tails stages $N_T$.  As simple call to SymPy's \texttt{solve()} function reveals
+the closed form solution $N_T(N_P, M^*)$:
+\begin{equation}
+\begin{array}{lr}
+\tiny
+N_T = &
+\frac{1}{\left(M^{*} - M_{j}\right) \log{\left (\alpha \right )}} \left[
+- M^{*} N_{P} \log{\left (\alpha \right )} - M^{*} \log{\left (\alpha \right )} + M_{j} \log{\left (\alpha \right )} \right. \\ 
+& \left. - \log{\left (x^{T}_{j} \right )}  - \log{\left (\frac{- x^{F}_{j} + x^{P}_{j}}{\alpha^{M^{*} N_{P}} x^{F}_{j} x^{P}_{j} - \alpha^{M^{*} N_{P}}x^{F}_{j} x^{T}_{j} - \alpha^{M_{j} N_{P}} x^{F}_{j} x^{P}_{j} + \alpha^{M_{j} N_{P}} x^{P}_{j} x^{T}_{j}} \right )} \right] \\
+\end{array}
+\end{equation}
 
 \subsection{Code Generation Pipeline}
 \label{sec:codegen}
