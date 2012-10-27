@@ -324,8 +324,8 @@ N_T & = & \left[M^{*} \log{\left (\alpha \right )} - M_{j} \log{\left (\alpha \r
 \end{equation}
 Note that this transformation requires the logarithm identity 
 $\log(a+c) = \log(a) + \log(1 + \frac{c}{a})$.  Equation \ref{nt_closed} is superior
-in the sense that it requires 31 operations to as opposed to the 38 in 
-equation \ref{nt_closed_full}.  More importantly, $N_P$ appears only once in this 
+in the sense that it requires 31 operations to as opposed to the original 38.
+More importantly, $N_P$ appears only once in this 
 expression and $M^*$ is reduced to three occurances.
 
 \begin{figure}[htpb]
@@ -336,8 +336,11 @@ expression and $M^*$ is reduced to three occurances.
 \end{center}
 \end{figure}
 
-Figure \ref{nt_closed_fig} confirms that the closed form $N_T(N_P, M^*)$ is coreect.
-This 
+Figure \ref{nt_closed_fig} confirms that the closed form $N_T(N_P, M^*)$ is correct.
+For an increasing number of enrichming stages, the stripping stages must also 
+increase to maintain the proper matched abundance flow rates.
+Therefore, equation \ref{nt_closed} allows for the elimination of $N_T$ as an 
+independent variable when computing $L/F$ and $N_P$.
 
 
 \subsection{Code Generation Pipeline}
