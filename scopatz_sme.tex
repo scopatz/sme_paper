@@ -342,6 +342,38 @@ increase to maintain the proper matched abundance flow rates.
 Therefore, equation \ref{nt_closed} allows for the elimination of $N_T$ as an 
 independent variable when computing $L/F$ and $N_P$.
 
+Next, examine the MARC constraint in equation \ref{tail-constraint}.  This states that
+the tails concentraion of the \jth key component that is computed by the concentration
+equations \emph{must} be equal to the concentraion specified for the cascade in the
+initial conditions.  (Recall that $x_j^T$ is one of the known parameters.)  
+Substituting $N_T(N_P, M^*)$ into this expression, the function $f$ is obtained:
+\begin{equation}
+f(N_P,M^*) =
+\left(\frac{x_j^F}{\frac{T}{F}} \cdot \frac{1 - \beta_i^{-N_P}}
+                                           {\beta_j^{N_T(N_P,M^*)+1} - \beta_j^{-N_P}} \right)
+- \left(x_j^T\cdot\sum_i^{I} x_i^T\right) \equiv 0
+\end{equation}
+Here, like above with $P/F$, the key component simplification of $T/F$ in equation
+\ref{tpf-key} is used.
+
+Ideally, the terms in $f(N_P,M^*)$ would be rearrangable into a closed form expresssion
+for either $N_P$ or $M^*$.  Since there are fewer instances of $N_P$, the number of
+enriching stages would be the prefered candidate.  However from Galois theory, 
+due to structure of $f(N_P,M^*)$ no such closed form solution is possible.  Examining
+with respect to just $N_P$, the stucture of $f$ roughly fits:
+\begin{equation}
+\frac{1 + \alpha^{-N_P}}{\alpha^{-\log(\alpha^{-N_P})+1} - \alpha^{-N_P}} - x_j^T
+    \frac{1 + \alpha^{-N_P}}{\alpha^{-\log(\alpha^{-N_P})+1} - \alpha^{-N_P}} -
+    \cdots 
+\end{equation}
+Even this overly simplified representation cannot be rearranged as is to give a 
+closed form function for $N_P$.  It may be possible to achive such an expression 
+by making logarithm aproximations, such as $\log(a) \approx a - 1$ for $a\approx1$.  
+This could 
+eliminate some of the multiply nested powers of $N_P$ which would potentially yield
+a closed form representation.  However, since the $\log$ terms appear in the exponent
+of $\alpha$, any eror induded by these approximations would be compounded 
+uncessarily.  Therefore this line of inquiry was not pursued further.
 
 \subsection{Code Generation Pipeline}
 \label{sec:codegen}
