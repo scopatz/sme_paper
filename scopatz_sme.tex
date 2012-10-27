@@ -295,18 +295,39 @@ number of irreducible operation ($+, -, \times, /, \%, \log, \sin, \mbox{abs},$ 
 which must be perfomed to compute a complex expression.  Hence much of the variable
 elimination below also attempts to simeltaneously curtail the overall operation count. 
 
-To start, consider the constraint in equation \ref{prod-constraint} and the number
-of tails stages $N_T$.  As simple call to SymPy's \texttt{solve()} function reveals
-the closed form solution $N_T(N_P, M^*)$:
+To start, consider the constraint in equation \ref{prod-constraint}, the key 
+component simplification of $P/F$ seen in equation \ref{ppf-key}, and the number
+of tails stages $N_T$.  As call to SymPy's \texttt{solve()} function rearranges the 
+constraint to reveal the closed form solution $N_T(N_P, M^*)$:
 \begin{equation}
-\begin{array}{lr}
-\tiny
-N_T = &
-\frac{1}{\left(M^{*} - M_{j}\right) \log{\left (\alpha \right )}} \left[
-- M^{*} N_{P} \log{\left (\alpha \right )} - M^{*} \log{\left (\alpha \right )} + M_{j} \log{\left (\alpha \right )} \right. \\ 
-& \left. - \log{\left (x^{T}_{j} \right )}  - \log{\left (\frac{- x^{F}_{j} + x^{P}_{j}}{\alpha^{M^{*} N_{P}} x^{F}_{j} x^{P}_{j} - \alpha^{M^{*} N_{P}}x^{F}_{j} x^{T}_{j} - \alpha^{M_{j} N_{P}} x^{F}_{j} x^{P}_{j} + \alpha^{M_{j} N_{P}} x^{P}_{j} x^{T}_{j}} \right )} \right] \\
+\begin{array}{lcl}
+N_T & = & \left[- M^{*} N_{P} \log{\left (\alpha \right )} - M^{*} \log{\left (\alpha \right )} + M_{j} \log{\left (\alpha \right )} - \log{\left (x^{T}_{j} \right )} \right. \\ 
+& & \left. - \log{\left (\frac{- x^{F}_{j} + x^{P}_{j}}{\alpha^{M^{*} N_{P}} x^{F}_{j} x^{P}_{j} - \alpha^{M^{*} N_{P}}x^{F}_{j} x^{T}_{j} - \alpha^{M_{j} N_{P}} x^{F}_{j} x^{P}_{j} + \alpha^{M_{j} N_{P}} x^{P}_{j} x^{T}_{j}} \right )} \right] \\
+& & \times \left[\left(M^{*} - M_{j}\right) \log{\left (\alpha \right )} \right]^{-1}
 \end{array}
+\label{nt_closed_full}
 \end{equation}
+While equation \ref{nt_closed_full} is successfully only a function of known 
+parameters and $N_P$ and $M^*$, it is not an ideal expression.  This is because both 
+$M^*$ and $N_P$ each appear five times in this closed form solution.  Thus if this 
+were substitued into the original MARC system to eliminate $N_T$, the number of 
+instances of indpendent variables would grow by a ratio of 10:1.    
+
+To decrease the substitution ratio, and simplify the expression, equation 
+\ref{nt_closed_full} may be rewritten by hand as the following:
+\begin{equation}
+\begin{array}{lcl}
+N_T & = & \left[M^{*} \log{\left (\alpha \right )} - M_{j} \log{\left (\alpha \right )} + \log{\left (x^{T}_{j} \right )} + \log{\left (\frac{-1.0 + \frac{x^{P}_{j}}{x^{F}_{j}}}{x^{P}_{j} - x^{T}_{j}} \right )}  \right. \\
+& & \left. - \log{\left (\frac{\alpha^{N_{P} \left(- M^{*} + M_{j}\right)} \left(x^{F}_{j} x^{P}_{j} - x^{P}_{j} x^{T}_{j}\right)}{- x^{F}_{j} x^{P}_{j} + x^{F}_{j} x^{T}_{j}} + 1 \right )}\right] \times \frac{1}{\left(- M^{*} + M_{j}\right) \log{\left (\alpha \right )}} \\
+\end{array}
+\label{nt_closed}
+\end{equation}
+Note that this transformation requires the logarithm identity 
+$\log(a+c) = \log(a) + \log(1 + \frac{c}{a})$.  Equation \ref{nt_closed} is superior
+in the sense that it requires 31 operations to as opposed to the 38 in 
+equation \ref{nt_closed_full}.  More importantly, $N_P$ appears only once in this 
+expression and $M^*$ is reduced to three occurances.
+
 
 \subsection{Code Generation Pipeline}
 \label{sec:codegen}
