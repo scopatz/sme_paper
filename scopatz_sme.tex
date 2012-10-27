@@ -465,6 +465,17 @@ precise far from this point.}
 \end{center}
 \end{figure}
 
+Figure \ref{np_closed_fig} plots the closed form solution to $N_P(M^*)$ both (a)
+on its own and (b) overlayed onto the above heat map.  This shows that the 
+quadradic solution to the second order Taylor series approximation is an astondingly 
+accurate one when close to the initial conditions $N_P=N_P^0$ and $M^*=(M_j+M_k)/2$.
+Naturally being only second order, this approximation breaks down farther away from 
+the initial guess.  For greater values of $N_P$ and $M^*$, the curve begins to 
+over-predict the result until the point that the discriminat becomes negative, the
+solution becomes complex, and the data set is truncated.  For smaller values, the
+result diverges by under-predicting.  That $N_P(M^*)$ deviates at the edges of the
+domain is an expected phenomenon for Taylor series approximations.
+
 
 \subsection{Code Generation Pipeline}
 \label{sec:codegen}
