@@ -391,7 +391,8 @@ uncessarily.  Therefore this line of inquiry was not pursued further.
 \includegraphics[scale=0.5]{np_constraint.eps}
 \caption{$f(N_P, M^*)$ over the range of possible $N_P$ and $M^*$ values.  The black
 countour line represents $f(N_P, M^*)=0$ and is the solution to the MARC contraint
-in equation \ref{tail-constraint}.}
+in equation \ref{tail-constraint}. 
+Data was computed for a typical natural uranium cascade.}
 \label{np_contraint_fig}
 \end{center}
 \end{figure}
@@ -441,6 +442,7 @@ a closed form expression $N_P(M^*)$ is trivially solved for via the
 quadradic equation.
 \begin{equation}
 N_P(M^*) = \frac{-b - \sqrt{b^2 - 4ac}}{2a}
+\label{np_closed}
 \end{equation}
 Note that for this approximation $a$ is always positive, $b$ is always negative, 
 and the discrminant inside the sqaure root is always posiitve.  Therefore only the 
@@ -460,7 +462,7 @@ a complex solution.  (b): The equation from (a) as a dashed black line overlayed
 of Figure \ref{np_contraint_fig}.  The solid black line is a linearlly interpolated
 countour for $f(N_P, M^*)=0$. (a) \& (b) show that $N_P(M^*)$ is an accurate 
 approximation near the intial guesses $N_P^0$ and $M^*=(M_j+M_k)/2$, but less 
-precise far from this point.}
+precise far from this point. Data was computed for a typical natural uranium cascade.}
 \label{np_closed_fig}
 \end{center}
 \end{figure}
@@ -475,6 +477,28 @@ over-predict the result until the point that the discriminat becomes negative, t
 solution becomes complex, and the data set is truncated.  For smaller values, the
 result diverges by under-predicting.  That $N_P(M^*)$ deviates at the edges of the
 domain is an expected phenomenon for Taylor series approximations.
+
+\begin{figure}[htpb]
+\begin{center}
+\includegraphics[scale=0.5]{loverf.eps}
+\caption{$L/F(M^*)$ over the range of valid $M^*$ values.
+Data was computed for a typical natural uranium cascade.}
+\label{loverf_fig}
+\end{center}
+\end{figure}
+
+Therefore, equation \ref{np_closed} may be substituted into equation \ref{nt_closed}
+to obtain an expression $N_T(N_P(M^*),M^*)=N_T(M^*)$ which only depends on $M^*$ and 
+the initial conditions.  Moreover, both equations \ref{nt_closed} \& \ref{np_closed}
+may be subsititued into equation \ref{ltot-over-feed} to obtain 
+$L/F(N_P(M^*),N_T(M^*),M^*)=L/F(M^*)$ solely as a function of $M^*$.  Thus
+$L/F(M^*)$ may be minimized using any standard one-dimensional algorithm.
+Figure \ref{loverf_fig} shows $L/F(M^*)$ for the full domain of $M*$, demonstrating 
+that this symbolic methodology computes the correct bowl-like shape.  Note that while 
+this method is successful, the number of operations in the final form of $L/T$ may be 
+in the thousands to millions depending on how many components are included in the 
+calculation.  A mechanism for mitigating huge numbers of opperations is described
+in \S \ref{sec:codegen}.
 
 
 \subsection{Code Generation Pipeline}
