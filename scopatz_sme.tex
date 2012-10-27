@@ -314,7 +314,7 @@ were substitued into the original MARC system to eliminate $N_T$, the number of
 instances of indpendent variables would grow by a ratio of 10:1.    
 
 To decrease the substitution ratio, and simplify the expression, equation 
-\ref{nt_closed_full} may be rewritten by hand as the following:
+\ref{nt_closed_full} may be rewritten (by hand) as the following:
 \begin{equation}
 \begin{array}{lcl}
 N_T & = & \left[M^{*} \log{\left (\alpha \right )} - M_{j} \log{\left (\alpha \right )} + \log{\left (x^{T}_{j} \right )} + \log{\left (\frac{-1.0 + \frac{x^{P}_{j}}{x^{F}_{j}}}{x^{P}_{j} - x^{T}_{j}} \right )}  \right. \\
@@ -327,6 +327,17 @@ $\log(a+c) = \log(a) + \log(1 + \frac{c}{a})$.  Equation \ref{nt_closed} is supe
 in the sense that it requires 31 operations to as opposed to the 38 in 
 equation \ref{nt_closed_full}.  More importantly, $N_P$ appears only once in this 
 expression and $M^*$ is reduced to three occurances.
+
+\begin{figure}[htpb]
+\begin{center}
+\includegraphics[scale=0.5]{nt_closed.eps}
+\caption{$N_T(N_P, M^*)$ for a Natural Uranium Cascade with $N_P\in[1,50]$ and $M^*=236.547$.}
+\label{nt_closed_fig}
+\end{center}
+\end{figure}
+
+Figure \ref{nt_closed_fig} confirms that the closed form $N_T(N_P, M^*)$ is coreect.
+This 
 
 
 \subsection{Code Generation Pipeline}
