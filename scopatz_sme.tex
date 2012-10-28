@@ -599,6 +599,26 @@ q = m + n + 1\\
 \end{equation}
 then the total number of opperation in expression \ref{cse-expanded} is 14 as
 opposed to the 9 operations in the system described by \ref{cse-condensed}.
+General CSE algorthims are much more complex than this demonstration.  They are
+therefore much more computationally expensive, typically at least $O(N^2)$, as
+they must search over the space of all possible subsitituitions.  However pricey
+CSE may be, it is still an upfront cost that is paid before C-code generation and
+results in even faster machine-code.  Thus CSE is an essential step which cannot be 
+avoided.  Here, SymPy's \texttt{cse()} function was used to reduce the overall 
+number of operations.
+
+\begin{figure}
+\caption{}
+\label{codegen_pipeline}
+\end{figure}
+
+Bringing all of the above together, Figure \ref{codegen_pipeline} represents the 
+code generation pipeline that takes the symbolic solution to the MARC equations
+described in \S\ref{sec:symes} and converts them into optimized machine code.
+This begins by taking the MARC equations and minimizes the number of opperations
+by performing common sub-expression elimination.  Following this, non-idiomatic
+C-code is produced.  This in turn is fed into a modern compiler.  Lastly, the compiled
+code may be executed at run time with out needing to repreat any of the previous steps.
 
 \section{Results \& Profiling}
 \label{sec:res}
