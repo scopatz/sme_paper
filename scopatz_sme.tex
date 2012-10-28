@@ -576,9 +576,29 @@ square roots, and powers which are implemented as functions in the C standard li
 Aside from these mathematical exceptions, though, additional function calls will
 be avoided.
 
-CSE
+The above arguments being valid, it remains the case that fewer operations yields
+shorter run times.  Thus it would be advantageous to reduce the total number of 
+operations required prior to any compiled code generation.  Furthermore with the
+similarity between many terms in the MARC equations, it stands to reasons that the
+total number of operations could be drastically reduced.  An algorithm for 
+caching and replacing common terms in an expression is known as common 
+sub-expression elimination (CSE) \cite{Cocke:1970:GCS:390013.808480}.
 
-
+As a simple CSE example, consider the following expression with $m$ and $n$ unknown:
+\begin{equation}
+\frac{m^{m+n+1} + n^{m+n+1} - 1}{m + n + 1} - m - n - 1
+\label{cse-expanded}
+\end{equation}
+If instead $q$ is set such that,
+\begin{equation}
+\begin{array}{l}
+q = m + n + 1\\
+\frac{m^{q} + n^{q} - 1}{q} - q\\
+\end{array}
+\label{cse-condensed}
+\end{equation}
+then the total number of opperation in expression \ref{cse-expanded} is 14 as
+opposed to the 9 operations in the system described by \ref{cse-condensed}.
 
 \section{Results \& Profiling}
 \label{sec:res}
