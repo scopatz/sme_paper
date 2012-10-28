@@ -525,9 +525,40 @@ desire to reatian the symbolic relationships is strongly outweighted by the hope
 for fast execution times.  The system of equations has been solved and no further
 symoblic manipulations will occur.
 
-Somethign which freezes symbolic relationships is a compiler.
+A tool which freezes in-place symbolic relationships and produces fast machine 
+code is a compiler.  For purposes here any standard compiler (such as gcc, LLVM, or 
+Intel) will sufice, though hardware specific compilers (such as OpenGL and CUDA)
+also exist.  Most compiler collections support a number of intermeadiate languages
+which may be used prior to machine code generation.  The \emph{de facto} contemporary
+standard is C, or possibliy C++.
 
-non-idiomatic
+Having $L/F(M^*)$ and related equatrions for all other cascade parameters as 
+symbolic expressions, the strategy implemented here takes this system and uses
+it to generate C/C++ source code.  The C representation is then handed off to the
+compiler of choice by the user.  The user may then access the compiled version
+through a well-defined abstract programming interface (API) which accepts an initial
+conditions cascade and returns the solved cascade.
+
+Walking a symbolic expression tree to produce the coorespondeing C-code was performed 
+with SymPy's own \texttt{codegen()} function.  However, this only assembles the 
+code relevant to a single expression.  Therefore several calls to  \texttt{codegen()},
+in the appropriate order, to generate a single C function representing the entire 
+system of MARC equations.
+
+It is important to note that the C-code which is generated is only an interim 
+representation.  Therefore it need not be idiomatic, human-readable, or concise.
+The only quality which matters is that it produce fast machine code upon compilation.
+Thus some common features of modern compiled languages can and should be abset 
+from the produced C-code.  These include an abscense of helper functions, an 
+avoidance of accessing memory on the heap, the truancy of loop structures, and a
+dearth of conditional branching.  In essence, the interim C representation should
+hope to contain only variable assignment statements, jump statements, and 
+arithmetic binary operations.
+
+no funcs! no heap! no loops!
+
+CSE
+
 
 
 \section{Results \& Profiling}
