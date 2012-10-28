@@ -555,7 +555,26 @@ dearth of conditional branching.  In essence, the interim C representation shoul
 hope to contain only variable assignment statements, jump statements, and 
 arithmetic binary operations.
 
-no funcs! no heap! no loops!
+The above opperations are so blessed or condemded because of the number of clock
+cycles on the processor they take.  For example, most arithmetic opertions take
+1 - 5 processor instructions.  Jumps and assignment (on the stack) may each take
+a single instruction.  Function calls, however, involve setting up a new stack
+and may require 100+ cycles to execute.  Heap allocation, access, and deallocation
+effectively amounts to function calls.  Conditional evaluation, which involves
+processor branching, may take between 10 - 20 cycles.  Loop structures, while faster 
+than fucntion calls, involve allocation of loop variables and possiblly conditional
+checking.  Modern compilers may inline functions when indicated and attempt 
+to unroll loops when possible, providing the associated speed boost.  However, 
+since the C-code is already being generated, automatically inlining all potential
+functions and unrolling all loops automatically ensures that produced machine code 
+minimizes the number of clock cycles.  Trusting the compiler to cleverly optimize
+source code must be done for hand written programs but is not required here.
+
+Still, given the actual form of the equations it will not be possible to fully 
+eliminate external function calls.  This is because the system includes logarithms, 
+square roots, and powers which are implemented as functions in the C standard library.
+Aside from these mathematical exceptions, though, additional function calls will
+be avoided.
 
 CSE
 
