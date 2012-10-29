@@ -612,7 +612,7 @@ number of operations.
 \begin{center}
 \includegraphics[scale=0.45]{codegen_pipeline.eps}
 \caption{Flowsheet for fast machine code generation starting from initial symbolic MARC
-equations.}
+equations.  Only the last step is executed at run time by the user.}
 \end{center}
 \label{codegen_pipeline}
 \end{figure}
@@ -627,6 +627,57 @@ code may be executed at run time with out needing to repreat any of the previous
 
 \section{Results \& Profiling}
 \label{sec:res}
+This section presents the results of the symbolic solution to the MARC system 
+of equations after it has been transforms into fast executable code via the 
+workflow described in \S\ref{sec:codegen}  Comparisons are made to both previously
+published results as well and to idiomatic numerical solvers \& optimizers.  The 
+comparison follows both the computation of the MARC cascade as well the $L/F$ 
+minimization. Additionally, the code generation pipeline is profiled.  This gives a
+heuristic indication of the large execution times that are avoided by generating 
+code rather than remaining with a symbolic solution.
+
+\subsection{MARC Solver}
+\label{sec:l-solver}
+
+To show that the symbolic method is correct for 
+
+\begin{table}[htbp]
+\begin{center}
+\caption{Product flow concentarations for tungsten cascade as computed by both 
+the symbolic solver and von Halle \cite{VonHalle1987}. The last column shows the
+difference between the two solutions.}
+\include{prod_diff_von_halle}
+\end{center}
+\label{prod_diff_vh}
+\end{table}
+
+\begin{table}[htbp]
+\begin{center}
+\caption{Tails flow concentarations for tungsten cascade as computed by both 
+the symbolic solver and von Halle \cite{VonHalle1987}. The last column shows the
+difference between the two solutions.}
+\include{tail_diff_von_halle}
+\end{center}
+\label{tail_diff_vh}
+\end{table}
+
+\subsection{$\min\left[L/F\right]$ Solver}
+\label{sec:minl-solver}
+
+compare to numeric
+
+compare to Song
+
+\subsection{Execution Time Comparison}
+\label{sec:timings-solver}
+
+\subsection{Code Generation Profiling}
+\label{sec:codegen-prof}
+codegen times
+
+num ops / cse
+
+compile times
 
 \section{Conclusions \& Future Work}
 \label{sec:conc}
