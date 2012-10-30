@@ -920,7 +920,29 @@ the number numerical of operations by a factor of 10.   Therefore even though
 performing CSE is an expensive code generation cost, it is a great boon to the 
 run time of the symbolic solver.
 
-compile times
+\begin{figure}[htpb]
+\begin{center}
+\includegraphics[scale=0.5]{compile_times.eps}
+\caption{Compile times as a function of the maximum number of components allowable
+    in a cascade.  Note that component numbers are cumulative.  The 5-component case 
+    contains expressions for both the 4- \& 3-component cases as well.}
+\label{compile_times_fig}
+\end{center}
+\end{figure}
+
+Lastly, the time required for a compiler to transform the produced C-code into 
+machine code is also of interest to any party which may install the symbolic solver.
+If this value is excessively high, it may limit the maximum number of components
+that may reasonably solved for by the end user.  Figure \ref{compile_times_fig}
+shows these compile times for 5, 10, 15, 20, and 30 maximum number of components.
+This curve seems to follow an exponential.  This is likely because each case also 
+contains the expressions for all component numbers less than or equal to it.  This 
+is because the underlying C-code which is generated utilizes a switch statement
+on the component number.  This prevents excess run times -- the expression for 40 
+components is not used when only 3 are needed -- but at the clear cost of compile
+times.  Given the trend of this curve, compiling the 40 component 
+case was not even attempted.
+
 
 \section{Conclusions \& Future Work}
 \label{sec:conc}
