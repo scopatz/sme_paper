@@ -655,7 +655,7 @@ here \cite{VonHalle1987}.
 \end{table}
 
 Table \ref{feed_vh} displays the feed concentations for the sample tungsten cascade.
-Additionally, this cascade has a static $M^*=181.0$, $N=35$, $M=14$,
+Additionally, this cascade has a static $M^*=181.0$, $N_P=35$, $N_T=14$,
 $\alpha=1.16306$, \nuc{W}{180} as the \jth key component, \nuc{W}{182} as the \kth
 key component, $x_j^P=0.51094$, and $x_j^T=0.00014$.  Tables \ref{prod_diff_vh} \&
 \ref{tail_diff_vh} diplay the product and tails concentrations computed by von Halle, 
@@ -706,9 +706,34 @@ solution to the MARC equations performs to within acceptable tolerance levels.
 \subsection{$\min\left[L/F\right]$ Solver}
 \label{sec:minl-solver}
 
-compare to numeric
+The next step of the benchmark presented here is to verify that the minimization
+of the total flow rate per unit feed has at least the same accuracy as 
+numeric solvers.  Two cases are compared.  The first numeric solver was implemented 
+using hand-written idiomatic C-code \cite{pyne:enrichment}.  The second case compares
+minimum $L/F$ values with results publised by Song et al. 
+\cite{doi:10.1080/01496391003793884}.
 
-compare to Song
+\begin{table}[htbp]
+\begin{center}
+\caption{Feed flow concentarations for a uranium re-enrichment cascade via  
+    VISION \cite{Jacobson2009}.}
+\include{feed_vision}
+\end{center}
+\label{feed_vision}
+\end{table}
+
+For the idiomatic C solver comparison, the same minimization algorthim was used.  
+This is a modified implementation of Newton's method with automatically detects 
+oscilations around the solution and, if necessary, decreases the tolerance.
+The comparison was performed for a uranium cascade of material recovered from 
+a light water reactor, which is then re-enriched.  The feed vector is taken from the
+nuclear fuel cycle simulator VISION \cite{Jacobson2009}.
+
+This cascade was initialized with the following parameters prior to minimization: 
+$M^*=236.5$, $N_P^0=30$, $N_T^0=10$, $\alpha=1.05$, \nuc{U}{235} as the \jth key 
+component, \nuc{U}{238} as the \kth key component, $x_j^P=0.055$, and 
+$x_j^T=0.0025$.  
+
 
 \subsection{Execution Time Comparison}
 \label{sec:timings-solver}
