@@ -879,9 +879,46 @@ large number of components (i.e. 20+).
 
 \subsection{Code Generation Profiling}
 \label{sec:codegen-prof}
-codegen times
+In \S\ref{sec:timings-solver}, the symbolic method is proven to be categorically
+faster than the numeric solution.  However, to gain a sense of how much upfront 
+computational effort is required to implement this solution, the code generation 
+pipeline itself is profiled here.
 
-num ops / cse
+\begin{figure}[htpb]
+\begin{center}
+\includegraphics[scale=0.5]{codegen_times.eps}
+\caption{Wall clock time required to generate C-code as a function of the 
+    number of components in the cascade.}
+\label{codegen_times_fig}
+\end{center}
+\end{figure}
+
+To start, Figure \ref{codegen_times_fig} represents the time required to construct 
+the C-code.  This is given as a function of the number of components in the cascade.
+While this is relatively fast for small component number (tens of seconds to minutes),
+Code generation can easily progress into the hours time-frame, even in an ideal 
+situation with excess memory resources.  When memory limits are reached by the 
+symbolic library, such exceutions become significantly larger.
+
+\begin{figure}[htpb]
+\begin{center}
+\includegraphics[scale=0.5]{numops.eps}
+\caption{Number of operations in the symbolic solver prior to and after the 
+    application of the common sub-expression eliminator as a function of the
+    number of components in the cascade.}
+\label{numops_fig}
+\end{center}
+\end{figure}
+
+Still, the expensive portion of the code generation pipeline is not in handling 
+and manipulating the symbolic expressions.  Instead code generation is overwhelmingly
+dominated by the CSE step.  Thus it is important to verify that eliminating
+sub-expression is worth the extra effort.  Figure \ref{numops_fig} displays the
+number of operations in the symbolic MARC solver both before and after running the 
+system of equations through SymPy's CSE algorithm.  This fairly consistrntly reduces
+the number numerical of operations by a factor of 10.   Therefore even though
+performing CSE is an expensive code generation cost, it is a great boon to the 
+run time of the symbolic solver.
 
 compile times
 
