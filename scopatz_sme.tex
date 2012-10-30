@@ -639,13 +639,34 @@ code rather than remaining with a symbolic solution.
 \subsection{MARC Solver}
 \label{sec:l-solver}
 
-To show that the symbolic method is correct for 
+To show that the symbolic method correctly solves for flow rates and concentrations,
+consider the base case where no attempt is made to minimize $L/F$.  Rather, given 
+an initial cascade setup the product and tails concentrations should be computed 
+correctly.  A tungsten cascade example provided by E. von Halle is benchmarked against
+here \cite{VonHalle1987}.
 
 \begin{table}[htbp]
 \begin{center}
-\caption{Product flow concentarations for tungsten cascade as computed by both 
-the symbolic solver and von Halle \cite{VonHalle1987}. The last column shows the
-difference between the two solutions.}
+\caption{Feed flow concentarations for a tungsten cascade via von Halle 
+\cite{VonHalle1987}.}
+\include{feed_von_halle}
+\end{center}
+\label{feed_vh}
+\end{table}
+
+Table \ref{feed_vh} displays the feed concentations for the sample tungsten cascade.
+Additionally, this cascade has a static $M^*=181.0$, $N=35$, $M=14$,
+$\alpha=1.16306$, \nuc{W}{180} as the \jth key component, \nuc{W}{182} as the \kth
+key component, $x_j^P=0.51094$, and $x_j^T=0.00014$.  Tables \ref{prod_diff_vh} \&
+\ref{tail_diff_vh} diplay the product and tails concentrations computed by von Halle, 
+the symbolic solver, and the absolute differnece bewteen them.
+
+\begin{table}[htbp]
+\begin{center}
+\caption{Product flow concentarations and differences for a tungsten cascade as 
+computed by  von Halle \cite{VonHalle1987}, one pass through the symbolic solver, 
+and two passes through the symbolic solver.  The second pass minimizes error arrising
+from von Halle's cascade, which leaves $L/F$ unminimized.}
 \include{prod_diff_von_halle}
 \end{center}
 \label{prod_diff_vh}
@@ -653,13 +674,34 @@ difference between the two solutions.}
 
 \begin{table}[htbp]
 \begin{center}
-\caption{Tails flow concentarations for tungsten cascade as computed by both 
-the symbolic solver and von Halle \cite{VonHalle1987}. The last column shows the
-difference between the two solutions.}
+\caption{Tails flow concentarations and differences for a tungsten cascade as 
+computed by  von Halle \cite{VonHalle1987}, one pass through the symbolic solver, 
+and two passes through the symbolic solver.  The second pass minimizes error arrising 
+from von Halle's cascade, which leaves $L/F$ unminimized.}
 \include{tail_diff_von_halle}
 \end{center}
 \label{tail_diff_vh}
 \end{table}
+
+Since the product enrichment of \nuc{W}{180} is almost 365 times larger than the feed
+enrichment, it is reasonable to expect that the Taylor series approximation to 
+$N_P(M^*)$ would be outside of its valid range.  (This, obviously, being an extreme
+case.)  As is shown in Tables \ref{prod_diff_vh} \& \ref{tail_diff_vh}, however, 
+even the worst case is off by no more than $7.8e-4$ in the product and $8.4e-6$ in the
+tails.  
+
+If tighter error bounds are desired, this is easily achivable by simply passing
+the results for $N_P$ \& $N_T$ through the symbolic solver for a second pass, 
+retatining all other cascade specifiations at their original values.  For all 
+components which are not trivially small, the second pass reduces the magintude of the 
+differences, in many cases dramatically so.  Note once again that such a second 
+pass is only required for extreme enrichment jumps.  For more normal separations, 
+this is not required.  Additionally such a pass is also not required when minimizing
+$L/F$ since the top-level optimizer is already performing multiple passes.
+
+Therefore even in the worst case scanrio described by von Halle, the symbolic 
+solution to the MARC equations performs to within acceptable tolerance levels.
+
 
 \subsection{$\min\left[L/F\right]$ Solver}
 \label{sec:minl-solver}
