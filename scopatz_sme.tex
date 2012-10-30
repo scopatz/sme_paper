@@ -729,10 +729,26 @@ The comparison was performed for a uranium cascade of material recovered from
 a light water reactor, which is then re-enriched.  The feed vector is taken from the
 nuclear fuel cycle simulator VISION \cite{Jacobson2009}.
 
+\begin{table}[htbp]
+\begin{center}
+\caption{Cascade parameter comparison after $L/F$ minimization for the symbolic 
+    solver with a numeric solver (written in idiomatic C) using a uranium feed from 
+    VISION \cite{Jacobson2009}.}
+\include{casc_compare_vision}
+\end{center}
+\label{casc_compare_vision}
+\end{table}
+
 This cascade was initialized with the following parameters prior to minimization: 
 $M^*=236.5$, $N_P^0=30$, $N_T^0=10$, $\alpha=1.05$, \nuc{U}{235} as the \jth key 
 component, \nuc{U}{238} as the \kth key component, $x_j^P=0.055$, and 
-$x_j^T=0.0025$.  
+$x_j^T=0.0025$.  The comparison may between the two solvers may be seen in Table
+\ref{casc_compare_vision}.  These results show that, for default tolerances, 
+both the numeric and the symbolic solver compute the same answer.  Furthermore
+if the tolerances are lowered, these two results continue to converge.  Thus this 
+benchmark demonstrates that the solvers are consistent.
+
+
 
 
 \subsection{Execution Time Comparison}
