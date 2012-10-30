@@ -748,7 +748,69 @@ both the numeric and the symbolic solver compute the same answer.  Furthermore
 if the tolerances are lowered, these two results continue to converge.  Thus this 
 benchmark demonstrates that the solvers are consistent.
 
+\begin{table}[htbp]
+\begin{center}
+\caption{Feed flow concentarations for a krypton enrichment cascade via  
+    Song, et al. \cite{doi:10.1080/01496391003793884}.}
+\include{feed_song}
+\end{center}
+\label{feed_song}
+\end{table}
 
+The second $L/F$ minimization comparison takes results from Song 
+\cite{doi:10.1080/01496391003793884}.  Here a kryton
+cascade was implemented.  While four different methods were compared in this study, 
+here only the MARC case with real-valued $N_P$  will be examined.  This is because
+this case most closely matches the symbolic solver.  Two different scenarios were
+compared: \nuc{Kr}{78} separation and \nuc{Kr}{83} separation.  Both used a 
+natural krypton feed, which may be seen in Table \ref{feed_song}.
+
+Unfortunately, the results reported by Song do not include product and tails 
+concentrations.  Therefore, the comparions here are made only with respect to 
+the optimization parameters.  Furthermore, exact product and feed enrichments
+($x_j^P$ \& $x_j^T$) are not given. Rather mere lower and upper bounds are specified
+(\emph{i.e.} $x_j^P\le0.20$).
+Still, the attempt to match these conditions was made here.
+
+\begin{table}[htbp]
+\begin{center}
+\caption{\nuc{Kr}{78} separation cascade optimization parameter comparison after 
+    $L/F$ minimization for the symbolic 
+    solver with Song, et al. \cite{doi:10.1080/01496391003793884}.}
+\include{casc_compare_song1}
+\end{center}
+\label{casc_compare_song1}
+\end{table}
+
+For \nuc{Kr}{78} separation, the cascade was initialized with $M^*=80.5$, 
+$N_P^0=21$, $N_T^0=4.5$, $\alpha=1.1$, \nuc{Kr}{78} as the \jth key
+component, \nuc{Kr}{82} as the \kth key component, $x_j^P=0.20$, and
+$x_j^T=0.00117$.  The comparison with the symbolic solver may be seen in Table
+\ref{casc_compare_song1}.
+
+\begin{table}[htbp]
+\begin{center}
+\caption{\nuc{Kr}{83} separation cascade optimization parameter comparison after 
+    $L/F$ minimization for the symbolic 
+    solver with Song, et al. \cite{doi:10.1080/01496391003793884}.}
+\include{casc_compare_song2}
+\end{center}
+\label{casc_compare_song2}
+\end{table}
+
+For \nuc{Kr}{83} separation, the cascade was initialized with $M^*=83.5$, 
+$N_P^0=16.3$, $N_T^0=17.7$, $\alpha=1.1$, \nuc{Kr}{83} as the \jth key
+component, \nuc{Kr}{84} as the \kth key component, $x_j^P=0.20$, and
+$x_j^T=0.05$.  The comparison with the symbolic solver may be seen in Table
+\ref{casc_compare_song2}.
+
+Both of the \nuc{Kr}{78} \&  \nuc{Kr}{83} separation comparison have higher 
+relative errors than have been previously demonstrated in this study.  
+Considering the imprecise nature of these comparison, 
+they are certainly close enough to be considered acceptable solutions.  
+Furthermore, as should be noted, in both cases the symbolic solver reports a 
+lower $L/F$ value than Song does.  Thus the symbolic solver may be said to have
+the more correct minimizer than the code to which it is being compared.
 
 
 \subsection{Execution Time Comparison}
