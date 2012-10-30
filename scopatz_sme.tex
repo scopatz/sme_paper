@@ -7,6 +7,7 @@
 \newcommand{\ith}[0]{$i$\superscript{th}}
 \newcommand{\jth}[0]{$j$\superscript{th}}
 \newcommand{\kth}[0]{$k$\superscript{th}}
+\newcommand{\us}[0]{$\mu$s}
 
 % New definition of square root:
 % it renames \sqrt as \oldsqrt
@@ -812,9 +813,69 @@ Furthermore, as should be noted, in both cases the symbolic solver reports a
 lower $L/F$ value than Song does.  Thus the symbolic solver may be said to have
 the more correct minimizer than the code to which it is being compared.
 
-
 \subsection{Execution Time Comparison}
 \label{sec:timings-solver}
+
+In \S\ref{sec:l-solver} \& \S\ref{sec:minl-solver} it was shown that the symbolic 
+method produces the correct solution for a vareity of possible cascade scenarios.
+In this section timing results are present which demonstrate considerably faster
+executions that the idiomatic C solution described above.
+
+Sample uranium cascades are tested that range from three to thirty components.  
+However, high component number cascades lack realistic physical examples.  
+Thus in order to profile the method in these theoretical cases the following strategy
+was used.
+
+All cascades set  an initial $M^*=236.5$,
+$N_P^0=30$, $N_T^0=10$, $\alpha=1.05$, \nuc{U}{235} as the \jth key
+component, \nuc{U}{238} as the \kth key component, $x_j^P=0.05$, and
+$x_j^T=0.0025$.  However, the feed concentrations for every nuclide that was not
+\nuc{U}{238} was set to 1\%
+while the concetration for \nuc{U}{238} itself made up the difference.  The number
+of components with atomic weights less than \nuc{U}{235} was balanced with the 
+number of components with atomic weights greater than \nuc{U}{238}.  This formed
+the sequence $\{\ldots$, \nuc{U}{233}, \nuc{U}{234}, \nuc{U}{235}, \nuc{U}{238}, 
+\nuc{U}{239}, \nuc{U}{240}, $\ldots\}$.  For nuclides which do not exists, the 
+atomic weight was assumed to be equal to the A-number.  Note that these ficticious
+feeds were implemented solely for testing the execution times for a large number
+of components and are not indicative of realistic material streams.
+
+\begin{figure}[htpb]
+\begin{center}
+\includegraphics[scale=0.5]{solver_exec_times.eps}
+\caption{Execution time for $L/F(M^*)$ calculation as a function of the number of 
+    components in the cascade for the symbolic \& numeric solvers.}
+\label{solver_exec_times_fig}
+\end{center}
+\end{figure}
+
+\begin{figure}[htpb]
+\begin{center}
+\includegraphics[scale=0.5]{min_exec_times.eps}
+\caption{Execution time for $\min\left[L/F\right]$ calculation as a function 
+    of the number of 
+    components in the cascade for the symbolic \& numeric solvers.}
+\label{min_exec_times_fig}
+\end{center}
+\end{figure}
+
+Figure \ref{solver_exec_times_fig} shows the execution times for just the $L/F$ 
+computation for both the symbolic and numeric solvers.  The symbolic solver ranges
+from 10 - 100 \us while the numeric solver goes from 1 - 10 ms.  Therefore, 
+on average, the base symbolic solver is approximately 30-100 times faster.
+
+Figure \ref{min_exec_times_fig} displays similar reults, but for the minimization
+of $L/F$.  Here, speedups range from 20 - 300 times faster.  This is due in part 
+to the potential for large spikes in the numeric solver when an adequate solution 
+is not easily found.  
+
+From this the symbolic solver is seen to be not only as accurate as numeric solvers
+but also significantly faster as well.  In fact, the speedups reported here tend
+to be on the lower end of the spectrum.  For more physically realistic cacscades, 
+slightly faster speed ups were experianced.  Unfortunately, showing this in a 
+categorical sense was not possible because of the lack of physical systems with a
+large number of components (i.e. 20+).
+
 
 \subsection{Code Generation Profiling}
 \label{sec:codegen-prof}
