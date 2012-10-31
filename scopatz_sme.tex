@@ -50,22 +50,25 @@
 % Text of abstract
 \begin{abstract}
 Matched abundance ratio cascades are a well-known method for computing concentrations
-and flow rates in multicomponent enrichment scenario.  Due to the form of this system 
+and flow rates in multicomponent enrichment scenarios.  Due to the form of this 
+system 
 of equations, they are often solved using standard constrained numerical 
-optimizers.  Here a symbolic mathematics library (SymPy) is coupled with 
+optimizers.  Alternatively, here a symbolic mathematics library (SymPy) is 
+coupled with 
 code generation techniques to produce a novel multicomponent solver.  This symbolic 
 solver is demonstrated to be between 20 - 300 times faster than the equivalent 
 numeric algorithm.
-Additionally, it is also shown to have at least the same -- and 
-occasionally more -- accuracy than the corresponding numeric optimizer.  The 
-symbolic solver implementation is free \& open source software and is available as 
-part of the PyNE project.
+Additionally, it is also shown to be at least as accurate as the corresponding 
+numeric optimizer.  The 
+symbolic solver implementation discussed here is free \& open source software and 
+is available as part of the PyNE project.
 \end{abstract}
 
 %% keywords here, in the form: keyword \sep keyword
 \begin{keyword}
 %% MSC codes here, in the form: \MSC code \sep code
 %% or \MSC[2008] code \sep code (2000 is the default)
+MARC \sep enrichment \sep symbolic
 \end{keyword}
 
 \end{frontmatter}
@@ -81,8 +84,8 @@ part of the PyNE project.
 The matched abundance ratio equations which are used to compute concentrations and 
 flow rates through a multicomponent enrichment cascade contain a number of terms 
 proportional to the number components.  While the number of components may be 
-handled elegantly mathematically, increased numbers of terms for increased numbers
-of components penalizes anyone (human or computer) actually performing the 
+handled elegantly mathematically, computing a greater number of components 
+penalizes anyone (human or computer) actually performing the 
 calculation.  However, 
 symbolic expression codes are capable of closely matching the original 
 mathematical representation of the cascade equations.
@@ -116,7 +119,7 @@ C, Fortran, or Python code.  For Mathematica, this is still not a perfect soluti
 because the generated code may call back to the symbolic library for certain 
 sub-expressions.
 
-Still, code generation form symbolic expressions provides an interesting opportunity. 
+Still, code generation from symbolic expressions provides an interesting opportunity. 
 It enables a workflow 
 where the symbolic expressions for a system of equations are manipulated, solved, 
 reduced to a minimal form, used to produced machine code, and finally executed by
@@ -148,7 +151,7 @@ Both the symbolic and the numeric MARC solvers discussed here are part of the fr
 \& open source computational nuclear engineering toolkit PyNE \cite{PyNE2012}.  
 The reader may therefore inspect the implementation of both methods at will.
 SymPy was used as the symbolic mathematics library because 
-it offered the most flexibility in with respect to code generation.
+it offered the most flexibility with respect to code generation.
 
 The remainder of this document proceeds as follows.  The symbolic methodology 
 is discussed in \S\ref{sec:meth}.  This includes an overview of the
@@ -241,9 +244,10 @@ stage separation factors $\beta_i$ for the \ith component of a mixture $I$:
 \end{equation}
 Here, $M_i$ represents the molecular weight [amu] of the \ith
 species while $M^*$ [amu] is an optimization parameter.  An initial first guess for 
-$M^*$ is given by the average of the molecular weights of the key components:
+$M^*$ is given by the average of the molecular weights of the key components. 
+Denote this by $M_0^*$:
 \begin{equation}
-M^* = \frac{1}{2}\left(M_j + M_k\right)
+M_0^* = \frac{1}{2}\left(M_j + M_k\right)
 \label{mstar-guess}
 \end{equation}
 By convention, $j$ \& $k$ are chosen such that $M_j < M_k$ and 
@@ -374,7 +378,7 @@ variables has a closed form representation in terms of the other independent
 parameters. This is because the closed form solution may be substituted into 
 the remaining equations and this variable eliminated from the computation.  This
 transforms the system from $X$ equations with $X$ unknowns into a system with 
-$(X-1)$ equations and $(X-1)$  unknowns.  Ideally, the system is be reducible 
+$(X-1)$ equations and $(X-1)$  unknowns.  Ideally, the system is reducible 
 to one equation as a function of one unknown, having potentially undergone many 
 substitutions.
 
@@ -395,7 +399,7 @@ Hence certain operators may explode the number of binary
 operations in the resultant expression after their application. 
 (For example, the chain rule for differentiation may have many more terms that 
 the original function.)
-So while the quintessential strategy in numerical evaluators is to mitigate error
+So while the quintessential strategy in numerical solvers is to mitigate error
 stemming from floating point arithmetic, a symbolic solver seeks to minimize the total
 number of irreducible operations ($+, -, \times, /, \%, \log, \sin, \mbox{abs},$ etc.). 
 Therefore much of the variable
@@ -414,7 +418,7 @@ N_T & = & \left[- M^{*} N_{P} \log{\left (\alpha \right )} - M^{*} \log{\left (\
 \label{nt_closed_full}
 \end{equation}
 While equation \ref{nt_closed_full} is only a function of known 
-parameters, $N_P$, and $M^*$, it is not an ideal expression.  This is because both 
+parameters, $N_P$, and $M^*$, it is not an exemplary expression.  This is because both 
 $M^*$ and $N_P$ each appear five times in this closed form solution.  Thus if this 
 were substituted into the original MARC system to eliminate $N_T$, the number of 
 instances of independent variables would grow by a ratio of 10:1.    
@@ -458,8 +462,8 @@ independent variable when computing $L/F$ and $N_P$.
 \begin{center}
 \caption{Feed flow concentrations for a natural uranium cascade.}
 \include{feed_nu}
-\end{center}
 \label{feed_nu}
+\end{center}
 \end{table}
 
 Next, examine the MARC constraint in equation \ref{tail-constraint}.  This states that
@@ -476,7 +480,8 @@ f(N_P,M^*) =
 Here again, like with $P/F$ above, the key component simplification of $T/F$ in 
 equation \ref{tpf-key} is used.
 
-Ideally, the terms in $f(N_P,M^*)$ would be rearrangeable into a closed form expression
+It would be highly valuable if the terms in $f(N_P,M^*)$ were rearrangeable into 
+a closed form expression
 for either $N_P$ or $M^*$.  Since there are fewer instances of $N_P$, the number of
 enriching stages would be the preferred candidate.  However from Galois theory, 
 due to structure of $f(N_P,M^*)$ no such closed form solution is possible.  Examining
@@ -509,7 +514,7 @@ Data was computed for a typical natural uranium fed cascade.}
 Instead, $f(N_P,M^*)$ was plotted as an unconstrained function of its two remaining 
 independent variables to produce the heat map that may be seen in Figure 
 \ref{np_constraint_fig}.  Since the range of $f$ contains both positive and negative
-values, it follows that there must be some combination of $(N_P,M^*)$ values which
+values, it follows that there must be some combination of $(N_P,M^*)$ which
 satisfy the original MARC constraint.  This $f(N_P, M^*)=0$ set is displayed on Figure 
 \ref{np_constraint_fig} as the black contour.  While this contour could hypothetically
 be used itself to provide a closed form $N_P(M^*)$ equation, such a strategy would 
@@ -536,7 +541,7 @@ f(N_P,M^*) & \approx &f(N_P^0,M^*) \\
 \label{f-taylor}
 \end{equation}
 This may be refactored with the introduction of coefficients $a$, $b$, and $c$ into 
-the canonical form,
+the canonical polynomial form,
 \begin{equation}
 \begin{array}{rcl}
 f(N_P,M^*) & = & a(N_P)^2 + bN_P + c\\
@@ -685,9 +690,11 @@ to unroll loops when possible. This provides the associated speed boost.  Howeve
 since the C-code is already being generated, automatically inlining all potential
 functions and unrolling all loops ensures that produced machine code 
 minimizes the number of clock cycles.  Trusting the compiler to cleverly optimize
-source code must be done for hand written programs but is not required here.
+source code must be done for hand written programs but is not required 
+for auto-generated ones.
 
-Still, given the actual form of the equations it will not be possible to fully 
+Still, given the actual form of the symbolic expressions it will not be possible to 
+fully 
 eliminate external function calls.  This is because the system of equations includes 
 logarithms, square roots, and powers.  These operators are implemented as functions 
 in the C standard library.
@@ -716,7 +723,7 @@ q = m + n + 1\\
 \end{array}
 \label{cse-condensed}
 \end{equation}
-then the total number of operation in expression \ref{cse-expanded} is 14 as
+then the total number of operations in expression \ref{cse-expanded} is 14 as
 opposed to the 9 operations in the system described by \ref{cse-condensed}.
 General CSE algorithms are much more complex than this demonstration.  Hence they are
 more computationally expensive, typically at least $O(N^2)$.  This is because
@@ -731,8 +738,8 @@ number of operations.
 \includegraphics[scale=0.45]{codegen_pipeline.eps}
 \caption{Flow sheet for fast machine code generation starting from initial symbolic MARC
 equations.  Only the last step is executed at run time by the user.}
-\end{center}
 \label{codegen_pipeline}
+\end{center}
 \end{figure}
 
 Chaining the above strategies together in sequence, Figure \ref{codegen_pipeline} 
@@ -740,7 +747,7 @@ represents the
 code generation pipeline that takes the symbolic solution to the MARC equations
 described in \S\ref{sec:symes} and converts them into optimized machine code.
 This begins by taking the MARC equations and minimizes the number of operations
-by performing common sub-expression elimination.  Following this, non-idiomatic
+via common sub-expression elimination.  Following this, non-idiomatic
 C-code is produced.  This in turn is fed into a modern compiler.  Lastly, the compiled
 code may be executed at run time with out needing to repeat any of the previous steps.
 
@@ -807,8 +814,8 @@ from von Halle's cascade, which leaves $L/F$ unminimized.}
 
 Since the product enrichment of \nuc{W}{180} is almost 365 times larger than the feed
 enrichment, it is reasonable to expect that the Taylor series approximation to 
-$N_P(M^*)$ would be outside of its valid range.  (This, obviously, being an extreme
-case.)  As is shown in Tables \ref{prod_diff_vh} \& \ref{tail_diff_vh},  
+$N_P(M^*)$ would be outside of its valid range.  
+As is shown in Tables \ref{prod_diff_vh} \& \ref{tail_diff_vh},  
 even the least accurate case is off by no more than 7.8e-4 in the product and 
 8.4e-6 in the tails.  
 
@@ -846,7 +853,7 @@ minimum $L/F$ values with results published by Song et al.
 \end{table}
 
 For the idiomatic C solver comparison, the same minimization algorithm was used.  
-This is a modified implementation of Newton's method with automatically detects 
+This is a modified implementation of Newton's method which automatically detects 
 oscillations around the solution and, if necessary, decreases the tolerance.
 The comparison was performed for the re-enrichment of  uranium recovered from 
 a light water reactor.  The feed vector is taken from the
@@ -933,7 +940,7 @@ Both of the \nuc{Kr}{78} \&  \nuc{Kr}{83} separation comparison have higher
 relative errors than have been previously demonstrated in this study.  
 However considering the imprecise nature of these comparison, 
 they are certainly close enough to be considered acceptable solutions.  
-Furthermore, as should be noted, in both cases the symbolic solver reports a 
+Furthermore, in both cases the symbolic solver reports a 
 lower $L/F$ value than Song does.  Thus the symbolic solver may be said to have
 the more correct minimizer than the code to which it is being compared.
 
@@ -943,7 +950,7 @@ the more correct minimizer than the code to which it is being compared.
 In \S\ref{sec:l-solver} \& \S\ref{sec:minl-solver} it was shown that the symbolic 
 method produces the correct solution for a variety of possible cascade scenarios.
 In this section timing results are presented which demonstrate considerably faster
-executions that the idiomatic C solution described above.
+executions than the idiomatic numerical C solver.
 
 Sample uranium cascades are tested that range from three to thirty components.  
 However, high component number cascades lack realistic physical examples.  
@@ -992,7 +999,7 @@ the base symbolic solver is between 30-100 times faster, with a modal average of
 around 80.
 
 Figure \ref{min_exec_times_fig} displays similar results, but for the minimization
-of $L/F$.  Here, speedups range from 20 - 300 times faster.  The increased range is 
+of $L/F$.  Here, speed ups range from 20 - 300 times faster.  The increased range is 
 due in part to the potential for large spikes in the execution time in the numeric 
 solver when an adequate solution is not easily found.  
 
@@ -1022,10 +1029,10 @@ pipeline itself is profiled here.
 
 To start, Figure \ref{codegen_times_fig} represents the time required to construct 
 the C-code.  This is given as a function of the number of components in the cascade.
-While this is relatively fast for small component number (tens of seconds to minutes),
-Code generation can easily progress into the hours, even in an ideal computing 
-situation with excess memory resources.  When memory limits are reached by the 
-symbolic library, such execution times become significantly larger.
+While this is relatively fast for small component numbers (tens of seconds to minutes),
+code generation can easily progress into the hours. 
+When memory limits are reached by the 
+symbolic library, execution times may become significantly longer.
 
 \begin{figure}[htpb]
 \begin{center}
@@ -1091,8 +1098,8 @@ It does not wash wash away these relationships by evaluating floating point data
 until the last possible step.
 
 Furthermore, this solution is significantly quicker to execute because it avoids
-repeatedly using idiomatic language constructions which slow down computation, such
-as function calls, loops, and heap memory.  Additionally, the symbolic solution is
+repeatedly using idiomatic language constructions which slow down computation (such
+as function calls, loops, and heap memory).  Additionally, the symbolic solution is
 passed through a common sub-expression elimination routine.  This further minimizes
 the number of operations that are performed.  While this is done to some extent when 
 hand-writing source code, a human is not capable of eliminating operations as 
@@ -1105,7 +1112,7 @@ underlying $L/F$ calculation.  However, the solution to $L/F(M^*)$ is known.
 Therefore there is no theoretical reason why the $\min\left[L/F\right]$ step 
 cannot be unrolled symbolically as well.
 
-Suppose, Newton's Method was chosen to compute the minimum $M^*$.  Guessing 
+Suppose Newton's method was chosen to compute the minimum $M^*$.  Guessing 
 an initial $M_0^*$, the optimization itself would be expressed symbolically as:
 \begin{equation}
 M^* = M_0^* - \frac{1}{L/F(M_0^*)}\left(\left.\frac{d}{dM^*}L/F(M^*)\right|_{M^*=M_0^*}\right)
@@ -1134,7 +1141,7 @@ Another avenue for possible future research is the investigation of non-MARC
 systems.  Due to the speed of the symbolic solver, the abundance ratios for 
 each centrifuge in a stage of a cascade need not be matched.  Heuristically
 if the centrifuges were treated individually, define a cascade with 40 stages, 
-ten thousand centrifuges per stage, and a 10 \us calculation time. 
+ten thousand centrifuges per stage, and a 10 \us calculation time per centrifuge. 
 The computation for this entire
 cascade would only take an estimated 4 seconds.  This is not an unreasonable 
 amount of execution time for the type of fine-grained information such a 
