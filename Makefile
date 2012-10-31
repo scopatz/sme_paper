@@ -31,7 +31,7 @@ realclean: clean
 
 all-via-dvi:
 	latex $(OPTS) $(BASEFILE)
-	bibtex $(BASEFILE).aux
+#	bibtex $(BASEFILE).aux
 	latex $(OPTS) $(BASEFILE)
 	latex $(OPTS) $(BASEFILE)
 	dvipdf $(BASEFILE)

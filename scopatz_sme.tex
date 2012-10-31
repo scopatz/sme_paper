@@ -36,7 +36,7 @@
 \usepackage{verbatim}
 \usetikzlibrary{shapes,arrows}
 
-\journal{Some Separations Journal}
+\journal{Separations Science \& Technology}
 
 % Start this document...
 \begin{document}
@@ -1164,6 +1164,109 @@ nuclear engineering (Bateman, neutron diffusion, neutron transport, etc.) is
 highly warranted.  Furthermore, the solution implemented here will continue to be 
 useful to any application which requires a multicomponent enrichment solver.
 
-\bibliography{refs}
+\section*{References}
+\label{sec:refs}
+
+%\bibliography{refs}
+\begin{thebibliography}{13}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+\providecommand{\eprint}[2][]{\url{#2}}
+\providecommand{\bibinfo}[2]{#2}
+\ifx\xfnm\relax \def\xfnm[#1]{\unskip,\space#1}\fi
+%Type = Book
+\bibitem[{{Wolfram Research, Inc}(2008)}]{Wolfram2008}
+\bibinfo{author}{{Wolfram Research, Inc}}, \bibinfo{year}{2008}.
+\newblock \bibinfo{title}{{Mathematica Edition: Version 7.0}}.
+\newblock \bibinfo{publisher}{Wolfram Research, Inc., Champaign, Illinois}.
+%Type = Book
+\bibitem[{{Maplesoft, a division of Waterloo Maple Inc.}(2005-2012)}]{Maple16}
+\bibinfo{author}{{Maplesoft, a division of Waterloo Maple Inc.}},
+  \bibinfo{year}{2005-2012}.
+\newblock \bibinfo{title}{Maple User Manual}.
+\newblock \bibinfo{publisher}{Maplesoft}, \bibinfo{address}{Toronto, ON,
+  Canada}.
+%Type = Book
+\bibitem[{{Maximia Project}(2000-2012)}]{Maxima5}
+\bibinfo{author}{{Maximia Project}}, \bibinfo{year}{2000-2012}.
+\newblock \bibinfo{title}{Maxima 5.28.0 Manual}.
+%Type = Manual
+\bibitem[{{SymPy Development Team}(2012)}]{SymPy2012}
+\bibinfo{author}{{SymPy Development Team}}, \bibinfo{year}{2012}.
+\newblock \bibinfo{title}{SymPy: Python library for symbolic mathematics}.
+%Type = Techreport
+\bibitem[{de~la Garza(1969)}]{DelaGarza1969}
+\bibinfo{author}{de~la Garza, A.}, \bibinfo{year}{1969}.
+\newblock \bibinfo{title}{{RESOLUTION OF A MULTICOMPONENT CASCADE WITH TWO KEY
+  WEIGHTS AND MULTI-FEEDS AND WITHDRAWALS.}}
+\newblock \bibinfo{type}{Technical Report}. Atomic Energy Commission Combined
+  Operations Planning, Oak Ridge, Tenn.
+%Type = Article
+\bibitem[{Song et~al.(2010)Song, Zeng, Sulaberidze, Borisevich and
+  Xie}]{doi:10.1080/01496391003793884}
+\bibinfo{author}{Song, T.}, \bibinfo{author}{Zeng, S.},
+  \bibinfo{author}{Sulaberidze, G.}, \bibinfo{author}{Borisevich, V.},
+  \bibinfo{author}{Xie, Q.}, \bibinfo{year}{2010}.
+\newblock \bibinfo{title}{Comparative study of the model and optimum cascades
+  for multicomponent isotope separation}.
+\newblock \bibinfo{journal}{Separation Science and Technology}
+  \bibinfo{volume}{45}, \bibinfo{pages}{2113--2118}.
+\newblock
+  \eprint{http://www.tandfonline.com/doi/pdf/10.1080/01496391003793884}.
+%Type = Misc
+\bibitem[{Scopatz(2012)}]{pyne:enrichment}
+\bibinfo{author}{Scopatz, A.}, \bibinfo{year}{2012}.
+\newblock \bibinfo{title}{{PyNE User's Guide: Enrichment}, {URL:}
+  \url{http://pyne.github.com/usersguide/enrichment.html}}.
+%Type = Inproceedings
+\bibitem[{Scopatz et~al.(2012)Scopatz, Romano, Wilson and Huff}]{PyNE2012}
+\bibinfo{author}{Scopatz, A.M.}, \bibinfo{author}{Romano, P.K.},
+  \bibinfo{author}{Wilson, P.P.}, \bibinfo{author}{Huff, K.D.},
+  \bibinfo{year}{2012}.
+\newblock \bibinfo{title}{{PyNE: Python For Nuclear Engineering}}, in:
+  \bibinfo{booktitle}{ANS Winter Meeting 2012}, pp. \bibinfo{pages}{985--987}.
+%Type = Article
+\bibitem[{Wood et~al.(1999)Wood, Borisevich and Sulaberidze}]{Wood1999}
+\bibinfo{author}{Wood, H.}, \bibinfo{author}{Borisevich, V.},
+  \bibinfo{author}{Sulaberidze, G.}, \bibinfo{year}{1999}.
+\newblock \bibinfo{title}{{On a Criterion Efficiency for Multi-Isotope Mixtures
+  Separation}}.
+\newblock \bibinfo{journal}{Separation Science and Technology}
+  \bibinfo{volume}{34}, \bibinfo{pages}{343--357}.
+%Type = Inproceedings
+\bibitem[{{Von Halle}(1987)}]{VonHalle1987}
+\bibinfo{author}{{Von Halle}, E.}, \bibinfo{year}{1987}.
+\newblock \bibinfo{title}{{Multicomponent isotope separation in matched
+  abundance ratio cascades composed of stages with large separation factors}},
+  in: \bibinfo{booktitle}{Proceedings of the 1st workshop on separation
+  phenomena in liquids and gases. Darmstadt, Germany}.
+%Type = Inproceedings
+\bibitem[{Sacks(1989)}]{Sacks:1989:ASS:1623755.1623823}
+\bibinfo{author}{Sacks, E.}, \bibinfo{year}{1989}.
+\newblock \bibinfo{title}{An approximate solver for symbolic equations}, in:
+  \bibinfo{booktitle}{Proceedings of the 11th international joint conference on
+  Artificial intelligence - Volume 1}, \bibinfo{publisher}{Morgan Kaufmann
+  Publishers Inc.}, \bibinfo{address}{San Francisco, CA, USA}. pp.
+  \bibinfo{pages}{431--434}.
+%Type = Article
+\bibitem[{Cocke(1970)}]{Cocke:1970:GCS:390013.808480}
+\bibinfo{author}{Cocke, J.}, \bibinfo{year}{1970}.
+\newblock \bibinfo{title}{Global common subexpression elimination}.
+\newblock \bibinfo{journal}{SIGPLAN Not.} \bibinfo{volume}{5},
+  \bibinfo{pages}{20--24}.
+%Type = Techreport
+\bibitem[{Jacobson et~al.(2009)Jacobson, Matthern, Piet and
+  Shropshire}]{Jacobson2009}
+\bibinfo{author}{Jacobson, J.J.}, \bibinfo{author}{Matthern, G.E.},
+  \bibinfo{author}{Piet, S.J.}, \bibinfo{author}{Shropshire, D.E.},
+  \bibinfo{year}{2009}.
+\newblock \bibinfo{title}{{VISION : Verifiable Fuel Cycle Simulation Model
+  Advances in Nuclear Fuel Management}}.
+\newblock \bibinfo{type}{Technical Report}. Idaho National Laboratory.
+
+\end{thebibliography}
+
 
 \end{document}
