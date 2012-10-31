@@ -3,11 +3,12 @@
 %General Short-Cut Commands
 \newcommand{\superscript}[1]{\ensuremath{^{\textrm{#1}}}}
 \newcommand{\subscript}[1]{\ensuremath{_{\textrm{#1}}}}
-\newcommand{\nuc}[2]{\superscript{#2}{#1}}
-\newcommand{\ith}[0]{$i$\superscript{th}}
-\newcommand{\jth}[0]{$j$\superscript{th}}
-\newcommand{\kth}[0]{$k$\superscript{th}}
-\newcommand{\us}[0]{$\mu$s}
+%\newcommand{\nuc}[2]{\superscript{#2}{#1}}
+\newcommand{\nuc}[2]{{#1}{#2}}
+\newcommand{\ith}[0]{$i^{\mbox{th}}$ }
+\newcommand{\jth}[0]{$j^{\mbox{th}}$ }
+\newcommand{\kth}[0]{$k^{\mbox{th}}$ }
+\newcommand{\us}[0]{$\mu$s }
 
 % New definition of square root:
 % it renames \sqrt as \oldsqrt
@@ -745,12 +746,14 @@ code may be executed at run time with out needing to repeat any of the previous 
 
 \section{Results \& Profiling}
 \label{sec:res}
+
 This section presents the results of the symbolic solution to the MARC system 
-of equations after it has been transforms into fast executable code via the 
+of equations after it has been transformed into fast executable code via the 
 workflow described in \S\ref{sec:codegen}  Comparisons are made to both previously
-published results as well and to idiomatic numerical solvers \& optimizers.  The 
+published results and to idiomatic numerical optimizers.  The 
 comparison follows both the computation of the MARC cascade as well the $L/F$ 
-minimization. Additionally, the code generation pipeline is profiled.  This gives a
+minimization. Lastly in this section, the code generation pipeline itself is profiled. 
+ This gives a
 heuristic indication of the large execution times that are avoided by generating 
 code rather than remaining with a symbolic solution.
 
@@ -759,17 +762,17 @@ code rather than remaining with a symbolic solution.
 
 To show that the symbolic method correctly solves for flow rates and concentrations,
 consider the base case where no attempt is made to minimize $L/F$.  Rather, given 
-an initial cascade setup the product and tails concentrations should be computed 
+an initial cascade setup, the product and tails concentrations should be computed 
 correctly.  A tungsten cascade example provided by E. von Halle is benchmarked against
 here \cite{VonHalle1987}.
 
 \begin{table}[htbp]
 \begin{center}
 \caption{Feed flow concentrations for a tungsten cascade via von Halle 
-\cite{VonHalle1987}.}
+    \cite{VonHalle1987}.}
 \include{feed_von_halle}
-\end{center}
 \label{feed_vh}
+\end{center}
 \end{table}
 
 Table \ref{feed_vh} displays the feed concentrations for the sample tungsten cascade.
@@ -786,9 +789,10 @@ computed by  von Halle \cite{VonHalle1987}, one pass through the symbolic solver
 and two passes through the symbolic solver.  The second pass minimizes error arising
 from von Halle's cascade, which leaves $L/F$ unminimized.}
 \include{prod_diff_von_halle}
-\end{center}
 \label{prod_diff_vh}
+\end{center}
 \end{table}
+
 
 \begin{table}[htbp]
 \begin{center}
@@ -797,22 +801,23 @@ computed by  von Halle \cite{VonHalle1987}, one pass through the symbolic solver
 and two passes through the symbolic solver.  The second pass minimizes error arising 
 from von Halle's cascade, which leaves $L/F$ unminimized.}
 \include{tail_diff_von_halle}
-\end{center}
 \label{tail_diff_vh}
+\end{center}
 \end{table}
 
 Since the product enrichment of \nuc{W}{180} is almost 365 times larger than the feed
 enrichment, it is reasonable to expect that the Taylor series approximation to 
 $N_P(M^*)$ would be outside of its valid range.  (This, obviously, being an extreme
-case.)  As is shown in Tables \ref{prod_diff_vh} \& \ref{tail_diff_vh}, however, 
-even the worst case is off by no more than $7.8e-4$ in the product and $8.4e-6$ in the
-tails.  
+case.)  As is shown in Tables \ref{prod_diff_vh} \& \ref{tail_diff_vh},  
+even the least accurate case is off by no more than 7.8e-4 in the product and 
+8.4e-6 in the tails.  
 
-If tighter error bounds are desired, this is easily achievable by simply passing
-the results for $N_P$ \& $N_T$ through the symbolic solver for a second pass, 
+If tighter error bounds are desired, this is easily achievable by simply piping
+the first results for $N_P$ \& $N_T$ through the symbolic solver for a second pass, 
 retaining all other cascade specifications at their original values.  For all 
 components which are not trivially small, the second pass reduces the magnitude of the 
-differences, in many cases dramatically so.  Note once again that such a second 
+differences.  In many cases this error reduction may be quite dramatic. Note once 
+again that such a second 
 pass is only required for extreme enrichment jumps.  For more normal separations, 
 this is not required.  Additionally such a pass is also not required when minimizing
 $L/F$ since the top-level optimizer is already performing multiple passes.
@@ -836,15 +841,15 @@ minimum $L/F$ values with results published by Song et al.
 \caption{Feed flow concentrations for a uranium re-enrichment cascade via  
     VISION \cite{Jacobson2009}.}
 \include{feed_vision}
-\end{center}
 \label{feed_vision}
+\end{center}
 \end{table}
 
 For the idiomatic C solver comparison, the same minimization algorithm was used.  
 This is a modified implementation of Newton's method with automatically detects 
 oscillations around the solution and, if necessary, decreases the tolerance.
-The comparison was performed for a uranium cascade of material recovered from 
-a light water reactor, which is then re-enriched.  The feed vector is taken from the
+The comparison was performed for the re-enrichment of  uranium recovered from 
+a light water reactor.  The feed vector is taken from the
 nuclear fuel cycle simulator VISION \cite{Jacobson2009}.
 
 \begin{table}[htbp]
@@ -853,42 +858,44 @@ nuclear fuel cycle simulator VISION \cite{Jacobson2009}.
     solver with a numeric solver (written in idiomatic C) using a uranium feed from 
     VISION \cite{Jacobson2009}.}
 \include{casc_compare_vision}
-\end{center}
 \label{casc_compare_vision}
+\end{center}
 \end{table}
 
 This cascade was initialized with the following parameters prior to minimization: 
 $M^*=236.5$, $N_P^0=30$, $N_T^0=10$, $\alpha=1.05$, \nuc{U}{235} as the \jth key 
 component, \nuc{U}{238} as the \kth key component, $x_j^P=0.055$, and 
-$x_j^T=0.0025$.  The comparison may between the two solvers may be seen in Table
-\ref{casc_compare_vision}.  These results show that, for default tolerances, 
-both the numeric and the symbolic solver compute the same answer.  Furthermore
-if the tolerances are lowered, these two results continue to converge.  Thus this 
-benchmark demonstrates that the solvers are consistent.
+$x_j^T=0.0025$.  The comparison between the two solvers may be seen in Table
+\ref{casc_compare_vision}.  These results show that, for default tolerances,
+both the numeric and the symbolic solver compute the same answer. 
+If the tolerances are lowered further these two results continue to converge.  
+Thus this benchmark demonstrates that the symbolic and numeric solutions
+are consistent.
 
 \begin{table}[htbp]
 \begin{center}
 \caption{Feed flow concentrations for a krypton enrichment cascade via  
     Song, et al. \cite{doi:10.1080/01496391003793884}.}
 \include{feed_song}
-\end{center}
 \label{feed_song}
+\end{center}
 \end{table}
 
 The second $L/F$ minimization comparison takes results from Song 
 \cite{doi:10.1080/01496391003793884}.  Here a krypton
-cascade was implemented.  While four different methods were compared in this study, 
-here only the MARC case with real-valued $N_P$  will be examined.  This is because
-this case most closely matches the symbolic solver.  Two different scenarios were
+cascade was implemented.  While four different methods were compared in Song's study, 
+here only the MARC case with real-valued $N_P$  will be examined because
+it most closely matches the symbolic solver.  Two different scenarios were
 compared: \nuc{Kr}{78} separation and \nuc{Kr}{83} separation.  Both used a 
 natural krypton feed, which may be seen in Table \ref{feed_song}.
 
 Unfortunately, the results reported by Song do not include product and tails 
-concentrations.  Therefore, the comparisons here are made only with respect to 
+concentrations.  The comparisons thus are made only with respect to 
 the optimization parameters.  Furthermore, exact product and feed enrichments
+for the \jth key component
 ($x_j^P$ \& $x_j^T$) are not given. Rather mere lower and upper bounds are specified
-(\emph{i.e.} $x_j^P\le0.20$).
-Still, the attempt to match these conditions was made here.
+(\emph{i.e.} $x_j^P\ge0.20$).
+Still, an attempt to match these conditions was made here.
 
 \begin{table}[htbp]
 \begin{center}
@@ -896,8 +903,8 @@ Still, the attempt to match these conditions was made here.
     $L/F$ minimization for the symbolic 
     solver with Song, et al. \cite{doi:10.1080/01496391003793884}.}
 \include{casc_compare_song1}
-\end{center}
 \label{casc_compare_song1}
+\end{center}
 \end{table}
 
 For \nuc{Kr}{78} separation, the cascade was initialized with $M^*=80.5$, 
@@ -912,8 +919,8 @@ $x_j^T=0.00117$.  The comparison with the symbolic solver may be seen in Table
     $L/F$ minimization for the symbolic 
     solver with Song, et al. \cite{doi:10.1080/01496391003793884}.}
 \include{casc_compare_song2}
-\end{center}
 \label{casc_compare_song2}
+\end{center}
 \end{table}
 
 For \nuc{Kr}{83} separation, the cascade was initialized with $M^*=83.5$, 
@@ -924,7 +931,7 @@ $x_j^T=0.05$.  The comparison with the symbolic solver may be seen in Table
 
 Both of the \nuc{Kr}{78} \&  \nuc{Kr}{83} separation comparison have higher 
 relative errors than have been previously demonstrated in this study.  
-Considering the imprecise nature of these comparison, 
+However considering the imprecise nature of these comparison, 
 they are certainly close enough to be considered acceptable solutions.  
 Furthermore, as should be noted, in both cases the symbolic solver reports a 
 lower $L/F$ value than Song does.  Thus the symbolic solver may be said to have
@@ -935,7 +942,7 @@ the more correct minimizer than the code to which it is being compared.
 
 In \S\ref{sec:l-solver} \& \S\ref{sec:minl-solver} it was shown that the symbolic 
 method produces the correct solution for a variety of possible cascade scenarios.
-In this section timing results are present which demonstrate considerably faster
+In this section timing results are presented which demonstrate considerably faster
 executions that the idiomatic C solution described above.
 
 Sample uranium cascades are tested that range from three to thirty components.  
@@ -946,13 +953,14 @@ was used.
 All cascades set  an initial $M^*=236.5$,
 $N_P^0=30$, $N_T^0=10$, $\alpha=1.05$, \nuc{U}{235} as the \jth key
 component, \nuc{U}{238} as the \kth key component, $x_j^P=0.05$, and
-$x_j^T=0.0025$.  However, the feed concentrations for every nuclide that was not
-\nuc{U}{238} was set to 1\%
-while the concentration for \nuc{U}{238} itself made up the difference.  The number
+$x_j^T=0.0025$.  However, the feed concentrations for every nuclide that is not
+\nuc{U}{238} was set to 1\%.
+Therefore the concentration for \nuc{U}{238} itself made up the difference.  
+The number
 of components with atomic weights less than \nuc{U}{235} was balanced with the 
 number of components with atomic weights greater than \nuc{U}{238}.  This formed
 the sequence $\{\ldots$, \nuc{U}{233}, \nuc{U}{234}, \nuc{U}{235}, \nuc{U}{238}, 
-\nuc{U}{239}, \nuc{U}{240}, $\ldots\}$.  For nuclides which do not exists, the 
+\nuc{U}{239}, \nuc{U}{240}, $\ldots\}$.  For nuclides which do not exist, the 
 atomic weight was assumed to be equal to the A-number.  Note that these fictitious
 feeds were implemented solely for testing the execution times for a large number
 of components and are not indicative of realistic material streams.
@@ -977,26 +985,28 @@ of components and are not indicative of realistic material streams.
 \end{figure}
 
 Figure \ref{solver_exec_times_fig} shows the execution times for just the $L/F$ 
-computation for both the symbolic and numeric solvers.  The symbolic solver ranges
-from 10 - 100 \us while the numeric solver goes from 1 - 10 ms.  Therefore, 
-on average, the base symbolic solver is approximately 30-100 times faster.
+computation for both the symbolic and numeric solvers.  The symbolic solver timings 
+range
+from 10 - 100 \us while the numeric solver goes from 1 - 10 ms.  Therefore,
+the base symbolic solver is between 30-100 times faster, with a modal average of
+around 80.
 
 Figure \ref{min_exec_times_fig} displays similar results, but for the minimization
-of $L/F$.  Here, speedups range from 20 - 300 times faster.  This is due in part 
-to the potential for large spikes in the numeric solver when an adequate solution 
-is not easily found.  
+of $L/F$.  Here, speedups range from 20 - 300 times faster.  The increased range is 
+due in part to the potential for large spikes in the execution time in the numeric 
+solver when an adequate solution is not easily found.  
 
-From this the symbolic solver is seen to be not only as accurate as numeric solvers
-but also significantly faster as well.  In fact, the speedups reported here tend
-to be on the lower end of the spectrum.  For more physically realistic cascades, 
+Thus the symbolic solver is not only as accurate as numeric solvers
+but also significantly faster as well.  In fact, the speed ups reported here tend
+to be on the lower end of the spectrum.  For less contrived feed materials, 
 slightly faster speed ups were experienced.  Unfortunately, showing this in a 
-categorical sense was not possible because of the lack of physical systems with a
-large number of components (i.e. 20+).
+categorical sense is not possible because of the lack of physical systems which 
+scale in a consistent manner to a large number of components (i.e. 20+).
 
 
 \subsection{Code Generation Profiling}
 \label{sec:codegen-prof}
-In \S\ref{sec:timings-solver}, the symbolic method is proven to be categorically
+In \S\ref{sec:timings-solver}, the symbolic method is proven to be unequivicably
 faster than the numeric solution.  However, to gain a sense of how much upfront 
 computational effort is required to implement this solution, the code generation 
 pipeline itself is profiled here.
@@ -1013,9 +1023,9 @@ pipeline itself is profiled here.
 To start, Figure \ref{codegen_times_fig} represents the time required to construct 
 the C-code.  This is given as a function of the number of components in the cascade.
 While this is relatively fast for small component number (tens of seconds to minutes),
-Code generation can easily progress into the hours time-frame, even in an ideal 
+Code generation can easily progress into the hours, even in an ideal computing 
 situation with excess memory resources.  When memory limits are reached by the 
-symbolic library, such executions become significantly larger.
+symbolic library, such execution times become significantly larger.
 
 \begin{figure}[htpb]
 \begin{center}
@@ -1033,7 +1043,7 @@ dominated by the CSE step.  Thus it is important to verify that eliminating
 sub-expression is worth the extra effort.  Figure \ref{numops_fig} displays the
 number of operations in the symbolic MARC solver both before and after running the 
 system of equations through SymPy's CSE algorithm.  This fairly consistently reduces
-the number numerical of operations by a factor of 10.   Therefore even though
+the number of operations by a factor of 10.   Therefore even though
 performing CSE is an expensive code generation cost, it is a great boon to the 
 run time of the symbolic solver.
 
@@ -1050,19 +1060,20 @@ run time of the symbolic solver.
 Lastly, the time required for a compiler to transform the produced C-code into 
 machine code is also of interest to any party which may install the symbolic solver.
 If this value is excessively high, it may limit the maximum number of components
-that may reasonably solved for by the end user.  Figure \ref{compile_times_fig}
+that can reasonably solved for by the end user.  Figure \ref{compile_times_fig}
 shows these compile times for 5, 10, 15, 20, and 30 maximum number of components.
-This curve seems to follow an exponential.  This is likely because each case also 
-contains the expressions for all component numbers less than or equal to it.  This 
-is because the underlying C-code which is generated utilizes a switch statement
+This curve seems to follow an exponential trend.  This is likely because each case 
+also 
+contains the expressions for all component numbers less than or equal to it.  The 
+underlying generated C-code utilizes a switch statement
 on the component number.  This prevents excess run times -- the expression for 40 
 components is not used when only 3 are needed -- but at the clear cost of compile
 times.  Given the trend of this curve, compiling the 40 component 
 case was not even attempted.  The practical compile time limit lies around 20 
 components, taking 2 - 3  minutes.  Luckily, 20 components is sufficient for the
-overwhelming most use cases.  If required,  even 30 components may be obtained in
-a half an hour of compilation.  Moving to significantly more components may 
-require modifications to the algorithm as presented.
+overwhelming majority of use cases.  If required,  even 30 components may be obtained 
+in a half an hour of compilation.  Moving to significantly more components may 
+require modifications to the code generation algorithm presented.
 
 
 \section{Conclusions \& Future Work}
