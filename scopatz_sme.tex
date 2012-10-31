@@ -85,7 +85,7 @@ handled elegantly mathematically, increased numbers of terms for increased numbe
 of components penalizes anyone (human or computer) actually performing the 
 calculation.  However, 
 symbolic expression codes are capable of closely matching the original 
-mathematical repreresentation of the cascade equations.
+mathematical representation of the cascade equations.
 
 A variety of symbolic mathematics software tools exist. Examples include  
 Mathematica \cite{Wolfram2008}, Maple \cite{Maple16},  Maxima \cite{Maxima5}, 
@@ -138,7 +138,7 @@ to solve the MARC equations for the all independent variables simultaneously.
 
 Alternatively, a symbolic mathematics library is able to supervise expressions 
 with many orders of magnitude more terms than a human may handle.  Therefore
-implementing closed form expressions for all indpendent variables is now a realistic 
+implementing closed form expressions for all independent variables is now a realistic 
 possibility.  From here, solving the MARC system of equations may take place via
 variable substitution and elimination.
 Coupled with code generation techniques, this paper explores symbolic solutions 
@@ -735,7 +735,7 @@ equations.  Only the last step is executed at run time by the user.}
 \label{codegen_pipeline}
 \end{figure}
 
-Chaining the above strategies togther in sequence, Figure \ref{codegen_pipeline} 
+Chaining the above strategies together in sequence, Figure \ref{codegen_pipeline} 
 represents the 
 code generation pipeline that takes the symbolic solution to the MARC equations
 described in \S\ref{sec:symes} and converts them into optimized machine code.
@@ -822,7 +822,7 @@ pass is only required for extreme enrichment jumps.  For more normal separations
 this is not required.  Additionally such a pass is also not required when minimizing
 $L/F$ since the top-level optimizer is already performing multiple passes.
 
-Therefore even in the worst case scanrio described by von Halle, the symbolic 
+Therefore even in the worst case scenario described by von Halle, the symbolic 
 solution to the MARC equations performs to within acceptable tolerance levels.
 
 
@@ -1006,7 +1006,7 @@ scale in a consistent manner to a large number of components (i.e. 20+).
 
 \subsection{Code Generation Profiling}
 \label{sec:codegen-prof}
-In \S\ref{sec:timings-solver}, the symbolic method is proven to be unequivicably
+In \S\ref{sec:timings-solver}, the symbolic method is proven to be unequivocally
 faster than the numeric solution.  However, to gain a sense of how much upfront 
 computational effort is required to implement this solution, the code generation 
 pipeline itself is profiled here.
@@ -1115,7 +1115,7 @@ While such a mechanism was explored for preparation of this study, the derivativ
 in this expression explodes the number of terms into the millions.  This far exceeds
 the memory limitations of most individual computing resources.  
 
-The term explosition in equation \ref{mstar-newton-min} is particularly problematic 
+The term explosion in equation \ref{mstar-newton-min} is particularly problematic 
 since most other optimization strategies require
 even more derivatives to be evaluated.  So while symbolically minimizing $L/F(M^*)$
  promises
@@ -1150,7 +1150,7 @@ was made.  As a conceptual experiment, the results here indicate that
 investigation of symbolic solutions to other systems of equations in 
 nuclear engineering (Bateman, neutron diffusion, neutron transport, etc.) is
 highly warranted.  Furthermore, the solution implemented here will continue to be 
-useful to any application which requires a multicomponent erichment solver.
+useful to any application which requires a multicomponent enrichment solver.
 
 \bibliography{refs}
 
