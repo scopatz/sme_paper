@@ -135,26 +135,26 @@ Furthermore, closed form approximations are typically not used because
 there are too many terms to mange by hand.  Thus, numeric optimizers have been used 
 to solve the MARC equations for the all independent variables simultaneously.
 
-Alternatively, a symbolic mathematics library is able to handle expressions 
-with many orders of magnitude more terms than a human.  Therefore it should be 
-possible use closed form approximations 
-perform variable substitution and elimination in the MARC system.
+Alternatively, a symbolic mathematics library is able to supervise expressions 
+with many orders of magnitude more terms than a human may handle.  Therefore
+implementing closed form expressions for all indpendent variables is now a realistic 
+possibility.  From here, solving the MARC system of equations may take place via
+variable substitution and elimination.
 Coupled with code generation techniques, this paper explores symbolic solutions 
-that are at least as accurate and have faster execution times than either
-customized or off-the-shelf numerical solvers.
+that are at least as accurate and have faster execution times than numerical solvers.
 
 Both the symbolic and the numeric MARC solvers discussed here are part of the free 
 \& open source computational nuclear engineering toolkit PyNE \cite{PyNE2012}.  
 The reader may therefore inspect the implementation of both methods at will.
-The symbolic mathematics library that was used was SymPy because 
-it offered the most flexibility in terms of code generation.
+SymPy was used as the symbolic mathematics library because 
+it offered the most flexibility in with respect to code generation.
 
 The remainder of this document proceeds as follows.  The symbolic methodology 
 is discussed in \S\ref{sec:meth}.  This includes an overview of the
 MARC equations, a detailed explanation of the symbolic strategy used to solve 
-the MARC equations, and a full description of the code generation pipeline.
+them, and a full description of the code generation pipeline.
 Results are then presented in \S\ref{sec:res}.  This includes multiple benchmarks
-with an alternative numeric solver as well as published cascades by other 
+with to an alternative numeric solver as well as to published cascade results by other 
 authors.  Finally, \S\ref{sec:conc} discusses the validity of the presented method
 as well as possible avenues for further research.
 
@@ -162,19 +162,20 @@ as well as possible avenues for further research.
 \label{sec:meth}
 At its core, the solution to coupled multicomponent enrichment cascade equations is
 a minimization problem \cite{Wood1999}.  In a matched abundance ratio 
-\cite{DelaGarza1969} cascade this is often cast as the minimization of 
-the total flow rate $L$ through the system normalized by the feed flow rate $F$ to 
-form the positive and unitless optimization variable $L/F$.  Traditionally, 
+\cite{DelaGarza1969} cascade this may be cast as the minimization of 
+the total flow rate $L$ through the cascade normalized by the feed flow rate $F$.  
+Thus, the positive and unitless optimization variable $L/F$ is formed.  Traditionally, 
 minimizing this parameter as a function of other cascade state variables has been 
 performed either via off-the-shelf optimization libraries 
 \cite{doi:10.1080/01496391003793884} or custom built solvers \cite{PyNE2012}.
 
-However, both of these approaches rely on writing code idiomatic to underlying 
+However, both of these approaches rely on writing code idiomatic to the underlying 
 programming language.  For example, many numerical constraint optimizers, in order 
 to handle the case of arbitrarily complex expressions, accept as their primary 
 argument a function object or pointer.  Then for every iteration the optimizer must 
-call the function to be optimized.  This involves (in compiled languages) setting up 
-a new stack and allocating new memory for every solver iteration.  While good 
+call the function whose inputs are to be optimized.  This involves (in compiled 
+languages) setting up a new stack and allocating new memory for every solver 
+iteration.  While good 
 optimizers will be efficient in terms of the number of function calls they make, 
 there is no way for them to avoid multiple function calls and remain sufficiently 
 general. The number of function calls that are needed scales \emph{at least} linearly 
@@ -195,9 +196,9 @@ to a single expression is possible.
 
 Rather than phrasing this as a numerical optimization problem from the start, the 
 opposite conceptual tactic is taken.  The MARC system is expanded, manipulated, 
-and substituted symbolically the the majority of the calculation.  The actual 
-numerical results of the calculation are only computed as needed as the final step.
-The symbolic manipulation is generated prior to compilation, resulting in 
+and substituted symbolically during the majority of the calculation.  The actual 
+numerical results of the calculation are only computed as needed at the final step.
+Symbolic manipulations are concluded prior to compilation, resulting in 
 very fast run time solutions.
 
 In \S \ref{sec:marceq} the standard MARC system of equations is detailed. 
@@ -207,7 +208,7 @@ Lastly, \S \ref{sec:codegen} characterizes the pipeline that takes the symbolic 
 equations and converts them into fast machine code.  
 For the remainder of \S \ref{sec:meth}, a three-component natural uranium fed 
 cascade will be used when example data is required.
-Higher order cascades will be discussed in \S \ref{sec:res}.
+Cascades with a greater numbers of components will be discussed in \S \ref{sec:res}.
 
 \subsection{MARC Equations}
 \label{sec:marceq}
@@ -220,13 +221,13 @@ the rest of this paper.  For more information please refer to de la Garza
 Song \cite{doi:10.1080/01496391003793884}.
 
 Call $N$ the total number of stages in an enrichment cascade, $N_P$ the number of 
-product (enriching) stages above the feed entry, and $N_T$ the number of tails
+product (enriching) stages above the feed entry point, and $N_T$ the number of tails
 (stripping) stages below the feed point such that:
 \begin{equation}
 N = N_P + N_T
 \end{equation}
-Furthermore, MARC requires that we declare a species to enrich in the 
-product (subscript P).  This is known as the first key component an is denoted 
+MARC requires the declaration of a special species to enrich in the 
+product (subscript P).  This is known as the first key component and is denoted 
 here as $j$.  There must also be a second key component $k$ from which $j$ is 
 separated. Thus $k$ is more abundant in the tails stream (subscript T).
 
@@ -248,7 +249,7 @@ By convention, $j$ \& $k$ are chosen such that $M_j < M_k$ and
 therefore $M^*$ is bounded on the range $M^*\in[M_j,M_k]$ when minimizing $L/F$.
 
 Let $F$, $P$, and $T$ be the feed, product, and tails mass flow rates subject to 
-the conservation equation:
+the conservation equation,
 \begin{equation}
 F = P + T
 \label{total-flow-constraint}
@@ -259,7 +260,7 @@ and tails respectively.  Thus:
 \begin{equation}
 1 = \sum_i^I x_i^F = \sum_i^I x_i^P = \sum_i^I x_i^T 
 \end{equation}
-Therefore the flow rate ratios are:
+Therefore the flow rate ratios are given by the following.
 \begin{equation}
 \frac{P}{F} = \sum_i^I x_i^F\frac{\beta_i^{N_T+1} - 1}
                                  {\beta_i^{N_T+1} - \beta_i^{-N_P}}
@@ -271,7 +272,7 @@ Therefore the flow rate ratios are:
 \label{tpf-full}
 \end{equation}
 Equations \ref{ppf-full} \&  \ref{tpf-full} can be further reduced to functions
-of just the first key component:
+of just the first key component for an ideal cascade.
 \begin{equation}
 \frac{P}{F} = \frac{x_j^F - x_j^T}{x_j^P - x_j^T}
 \label{ppf-key}
@@ -282,7 +283,7 @@ of just the first key component:
 \end{equation}
 
 Either equations \ref{ppf-full} \& \ref{tpf-full} or equations \ref{ppf-key} \& 
-\ref{tpf-key} allow the calculation of the \ith component concentrations of in the 
+\ref{tpf-key} enable the calculation of the \ith component concentrations in the 
 product and tails streams as a function of the feed concentrations.
 \begin{equation}
 x_i^P = \frac{x_i^F}{\frac{P}{F}}\cdot\frac{\beta_i^{N_T+1} - 1}
@@ -312,7 +313,7 @@ R^T = \frac{x_j^T}{x_k^T}
 \end{equation}
 The ratios in equation \ref{abund_ratios} are valid for the three stages in the 
 cascade that are most important: the feed entry point, the final product, and the 
-last tails stage.
+exiting tails stage.
 
 Finally, the total flow rate per unit feed for a given cascade is computed by 
 the following expression:
@@ -324,12 +325,13 @@ the following expression:
 \end{equation}
 To solve for the optimal cascade, equation \ref{ltot-over-feed} must be minimized
 with respect to its constituent independent variables.
+This is analogous to the $L/P$ expression found in \cite{Wood1999}.
 
 Suppose that the cascade parameters 
 $\alpha$, 
 $j$, $k$, 
-$M_i$ for all $i$, 
-$x_i^F$ for all $i$, 
+$M_i$ for all $i\in I$, 
+$x_i^F$ for all $i\in I$, 
 the key product enrichment $x_j^P$, and the key 
 tails enrichment $x_j^T$ are all given.  The optimal cascade is thus characterized by 
 the system of equations below. This system has three equations and three unknowns --
@@ -357,10 +359,11 @@ Equation \ref{minlt-constraint} falls out of the extreme value theorem of calcul
 applied to equation \ref{ltot-over-feed}.
 
 To solve equations \ref{prod-constraint}-\ref{minlt-constraint}, initial guesses
-for the number of product and tails stages, $N_P^0$ and $N_T^0$, must be given.
-An initial guess for $M*$ is provided in equation \ref{mstar-guess}.  Once this system
-of equations is known, the product and tails concentrations for all components may be 
-solved with equations \ref{prod-concentration} \& \ref{tail-concentration}.
+for the number of product and tails stages, $N_P^0$ and $N_T^0$, must be supplied.
+An initial guess $M_0^*$ is provided in equation \ref{mstar-guess}.  Once this 
+system of equations is known, the product and tails concentrations for all 
+components may be solved with equations \ref{prod-concentration} \& 
+\ref{tail-concentration}.
 
 \subsection{Symbolic Enrichment Solver}
 \label{sec:symes}
@@ -371,7 +374,8 @@ parameters. This is because the closed form representation may be substituted in
 the remaining equations and this variable eliminated from the computation.  This
 transforms the system from $X$ equations with $X$ unknowns into a system with 
 $(X-1)$ equations and $(X-1)$  unknowns.  Ideally, the system would then be reducible 
-to one equation (with potentially many substitutions) as a function of one unknown.
+to one equation as a function of one unknown, having potentially undergone many 
+substitutions.
 
 The symbolic MARC algorithm here relies on eliminating the $N_P$ and $N_T$ variables
 from equations \ref{prod-constraint}-\ref{minlt-constraint}. This produces a single
