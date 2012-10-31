@@ -69,11 +69,69 @@ Some abstract text
 
 A variety of symbolic mathematics software tools exist such as 
 Mathematica \cite{Wolfram2008}, Maple \cite{Maple16},  Maxima \cite{Maxima5}, 
-and SymPy \cite{SymPy2012}.
+and SymPy \cite{SymPy2012}.  These codes excel at abstract representation and 
+maniuplation of mathematical symbols.  Even complicated operators such as 
+differential and integreation may be represented or applied as desired by the 
+users.  Therefore solving systems of equations with symbolic computational tools
+has been possible since the 1980s.
 
+However where such codes tend to fall short is during numeric evaluation of 
+their symbolic expressions.  While acceptable for small to medium numbers of 
+operations, they have difficulty scaling to large computations.  Moreover, 
+numeric, vectorized, or compiled expressions will always be executed faster
+by the processor.  Part of this may be due the symbolic library evaluating 
+expressions with arbitarily large floating point precision.  (Numeric libraries
+typically deal in fixed precision, normally 64-bits on modern systems.)  However, 
+float evaluation of a symbolic expression is more likely slow because an enitre 
+tree of sub-expressions must be walked and evaluated to produce the final result.
 
-Symbolic evaluation is slow, except...
+Slow numeric evaluation is what prevents symbolic tools from being used at a 
+production level.  Rather they fill the niche of demonstrating that a new
+method works prior to writing a numeric implementation.  To aid in this 
+process some symbolic libraries, such as Mathematica and SymPy, now include
+code generation features.  These routines will convert symbolic expressions into
+C, Fortran, or Python code.  For Mathematica, this is still not a perfect solution
+because the generated code may call back to the symbolic library for certain 
+sub-expressions.
 
+Still, code generation provides an interesting oppurtunity. It enables a workflow 
+where the symbolic expressions for a system of equations are manipulated and solved, 
+reduced to a minimal form, used to produced machine code, and finally executed by
+the user.  Since only this last step is present at run time, everything else in this
+pipeline is a pre-processing step.  While this pre-processing might be computationally
+expensive it will not affect the final run times.
+
+Of interest are the matched abuncance ratio cascade (MARC) equations for 
+multicomponent separations originally described by de la Garza \cite{DelaGarza1969}.
+This system may be solved using a constrained numerical optimizer 
+\cite{doi:10.1080/01496391003793884,pyne:enrichment}.  These equations make for 
+exciting challenge since some of the indpendent variables cannot be exactly
+expressed as a closed form function of the other independent variables. 
+Furthermore, approximating such closed solutions is typically not done because 
+there are too many terms to mange by hand.  Thus, numeric optimizer solutions 
+to the MARC equations solve for the independent variables simeltaneously.
+
+Alternatievly, a symbloic mathematics library is able to handle expressions 
+with many orders of magnitude more terms than a human.  Therefore it should be 
+possible to perform variable substitution and elimination in the MARC system.
+Coupled with code generation techniques, this paper explores symbolic solutions 
+that are at least as accurate and have faster execution times than either
+customized or off-the-shelf numerical solvers.
+
+Both the symbolic and the numeric MARC solvers discussed here are part of the free 
+\& open source computational nuclear enginering toolkit PyNE \cite{PyNE2012}.  
+The reader may therefore inspect the implementation of both methods at will.
+The symbolic mathematics library that was used was SymPy because 
+it offered the most flexability in terms of code generation.
+
+The remainder of this document proceeds as follows.  The symbolic methodology 
+is discussed in \S\ref{sec:meth}.  This includes an overviewof the
+MARC equations, a detailed explantaion of the symbolic strategy used to solve 
+the MARC equations, and a full description of the code generation pipeline.
+Results are then presented in \S\ref{sec:res}.  This includes multiple benchmarks
+with an alternative numeric solver as well as published cascades by other 
+authors.  Finally, \S\ref{sec:conc} discusses the validity of the presented method
+as well as possible avenues for further research.
 
 \section{Symbolic Methodology}
 \label{sec:meth}
@@ -1001,7 +1059,16 @@ may be worth revisiting after another 5 - 10 years of computational evolution.
 Still, the impatient may decided to re-examine the code generation pipeline to 
 produce more results faster.  Improvements here may open up the possibility of
 a symbolic minimizer.  This could involve multiple smaller CSE passes.  How 
-such code generation stages fit together remains as an open problem.
+such code generation routiness fit together remains as an open problem.
+
+Another avenue for possible future research is the investigation of non-MARC 
+systems.  Due to the speed of the symbolic solver, the abundance ratios for 
+each centrifuge in a stage of a cascade need not be matched.  Heuristically
+if the centrifuges were treated individually, with 40 stages, ten thousand 
+centrifuges per stage, and 10 \us calculation the computation for the entire
+cascade would only take an estimated 4 seconds.  This is not an unreasonable 
+amount of execution time for the type of fine-grained information such a 
+method would generate.  
 
 In summary, the MARC equations were chosen as prime oppurtunity for a 
 proof-of-concept symbolic solver.  The results here exceeded expectations in terms
