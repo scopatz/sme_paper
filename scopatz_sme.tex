@@ -619,14 +619,15 @@ in \S \ref{sec:codegen}.
 Up until this point, all symbolic computations and manipulations have taken place
 within SymPy.  For large numbers of operations -- such as the final expression for
 $L/F(M^*)$ in \S\ref{sec:symes} -- SymPy becomes memory bound.  Therefore any 
-minimization performed with SymPy would have unnecessarily large overhead and would
+optimization routine performed with SymPy expressions would have unnecessarily 
+large overhead and 
 not be computationally efficient.  For most symbolic solvers, this is where
 methodology development ends.  Either the computation is small enough to not hit
 memory limits and the calculation may proceed or it is too big and the evaluation
 becomes untenable.  For the solver presented here, however, the computational 
 pipeline is only in its initial step.
 
-Symbolic mathematics libraries are ``slow'' and have a relatively large memory 
+Symbolic mathematics libraries are slower and have a relatively large memory 
 footprint because they must retain all operational information about an expression.
 This is in preparation for possible further symbolic manipulation.  Numerical 
 reduction and evaluation comes only when explicitly requested as it destroys the 
@@ -653,9 +654,9 @@ conditions cascade and returns the solved cascade.
 
 Walking a symbolic expression tree to produce the corresponding C-code was performed 
 with SymPy's own \texttt{codegen()} function.  However, this only assembles the 
-code relevant to a single expression.  Therefore several calls to  \texttt{codegen()},
-in the appropriate order, to generate a single C function representing the entire 
-system of MARC equations.
+code relevant to a single expression.  Therefore several calls to  \texttt{codegen()}
+in the appropriate order are made to generate a single C function representing the 
+entire system of MARC equations.
 
 It is important to note that the C-code which is generated is only an interim 
 representation.  Therefore it need not be idiomatic, human-readable, or concise.
@@ -668,32 +669,37 @@ hope to contain only variable assignment statements, jump statements, and
 arithmetic binary operations.
 
 The above operations are so blessed or condemned because of the number of clock
-cycles on the processor they take.  For example, most arithmetic operations take
+cycles on the processor they take to complete.  For example, most arithmetic 
+operations take
 1 - 5 processor instructions.  Jumps and assignment (on the stack) may each take
 a single instruction.  Function calls, however, involve setting up a new stack
 and may require 100+ cycles to execute.  Heap allocation, access, and deallocation
 effectively amounts to function calls.  Conditional evaluation, which involves
 processor branching, may take between 10 - 20 cycles.  Loop structures, while faster 
 than function calls, involve allocation of loop variables and possibly conditional
-checking.  Modern compilers may `inline' functions when indicated and attempt 
-to unroll loops when possible, providing the associated speed boost.  However, 
+checking.  
+
+Modern compilers may `inline' functions when indicated and attempt 
+to unroll loops when possible. This provides the associated speed boost.  However, 
 since the C-code is already being generated, automatically inlining all potential
-functions and unrolling all loops automatically ensures that produced machine code 
+functions and unrolling all loops ensures that produced machine code 
 minimizes the number of clock cycles.  Trusting the compiler to cleverly optimize
 source code must be done for hand written programs but is not required here.
 
 Still, given the actual form of the equations it will not be possible to fully 
-eliminate external function calls.  This is because the system includes logarithms, 
-square roots, and powers which are implemented as functions in the C standard library.
-Aside from these mathematical exceptions, though, additional function calls will
+eliminate external function calls.  This is because the system of equations includes 
+logarithms, square roots, and powers.  These operators are implemented as functions 
+in the C standard library.
+Aside from these mathematical exceptions, additional function calls will
 be avoided.
 
-The above arguments being valid, it remains the case that fewer operations yields
+Independent of the validity of the above arguments, it remains the case that fewer 
+operations yields
 shorter run times.  Thus it would be advantageous to reduce the total number of 
 operations required prior to any compiled code generation.  Furthermore with the
-similarity between many terms in the MARC equations, it stands to reasons that the
+similarity between many terms in the MARC equations, it stands to reason that the
 total number of operations could be drastically reduced.  An algorithm for 
-caching and replacing common terms in an expression is known as common 
+caching and replacing repeated terms in an expression is known as common 
 sub-expression elimination (CSE) \cite{Cocke:1970:GCS:390013.808480}.
 
 As a simple CSE example, consider the following expression with $m$ and $n$ unknown:
@@ -711,10 +717,10 @@ q = m + n + 1\\
 \end{equation}
 then the total number of operation in expression \ref{cse-expanded} is 14 as
 opposed to the 9 operations in the system described by \ref{cse-condensed}.
-General CSE algorithms are much more complex than this demonstration.  They are
-therefore much more computationally expensive, typically at least $O(N^2)$, as
+General CSE algorithms are much more complex than this demonstration.  Hence they are
+more computationally expensive, typically at least $O(N^2)$.  This is because
 they must search over the space of all possible substitutions.  However pricey
-CSE may be, it is still an upfront cost that is paid before C-code generation and
+CSE may be, it remains an upfront cost that is paid before C-code generation and
 results in even faster machine-code.  Thus CSE is an essential step which cannot be 
 avoided.  Here, SymPy's \texttt{cse()} function was used to reduce the overall 
 number of operations.
@@ -728,7 +734,8 @@ equations.  Only the last step is executed at run time by the user.}
 \label{codegen_pipeline}
 \end{figure}
 
-Bringing all of the above together, Figure \ref{codegen_pipeline} represents the 
+Chaining the above strategies togther in sequence, Figure \ref{codegen_pipeline} 
+represents the 
 code generation pipeline that takes the symbolic solution to the MARC equations
 described in \S\ref{sec:symes} and converts them into optimized machine code.
 This begins by taking the MARC equations and minimizes the number of operations
