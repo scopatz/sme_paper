@@ -370,38 +370,39 @@ components may be solved with equations \ref{prod-concentration} \&
 
 When solving a system of equations, it is advantageous if any of the independent 
 variables has a closed form representation in terms of the other independent 
-parameters. This is because the closed form representation may be substituted into 
+parameters. This is because the closed form solution may be substituted into 
 the remaining equations and this variable eliminated from the computation.  This
 transforms the system from $X$ equations with $X$ unknowns into a system with 
-$(X-1)$ equations and $(X-1)$  unknowns.  Ideally, the system would then be reducible 
+$(X-1)$ equations and $(X-1)$  unknowns.  Ideally, the system is be reducible 
 to one equation as a function of one unknown, having potentially undergone many 
 substitutions.
 
 The symbolic MARC algorithm here relies on eliminating the $N_P$ and $N_T$ variables
 from equations \ref{prod-constraint}-\ref{minlt-constraint}. This produces a single
 expression for $L/F$, which may be handed to a traditional minimization algorithm.
-Still, the strategy for devising a successful symbolic solver for a given system
-of equations is distinct from the normal mechanisms used when engineering numeric 
-solutions.
+Thus, the strategy for engineering a successful symbolic solver for a given system
+of equations is distinct from the normal numeric mechanisms.
 
 Unlike numeric solvers where every expression is evaluated with an integer, real, or
 complex number as it is encountered, symbolic computation represents and stores all 
 operations performed on an expression.  Only after the accumulation of all 
-operations, and only if desired by the user, is a symbolic expression ever numerically
+operations -- and only if desired by the user -- is a symbolic expression ever numerically
 evaluated.  This is true even for compound operators such as trigonometric functions, 
 differentiation, and integration.
 
-Therefore certain operators (e.g. differentiation) may explode the number of binary
-operations in the resultant expression after their application (e.g. the chain rule).
+Hence certain operators may explode the number of binary
+operations in the resultant expression after their application. 
+(For example, the chain rule for differentiation may have many more terms that 
+the original function.)
 So while the quintessential strategy in numerical evaluators is to mitigate error
 stemming from floating point arithmetic, a symbolic solver seeks to minimize the total
-number of irreducible operation ($+, -, \times, /, \%, \log, \sin, \mbox{abs},$ etc.) 
-which must be performed to compute a complex expression.  Hence much of the variable
+number of irreducible operations ($+, -, \times, /, \%, \log, \sin, \mbox{abs},$ etc.). 
+Therefore much of the variable
 elimination below also attempts to simultaneously curtail the overall operation count. 
 
-To start, consider the constraint in equation \ref{prod-constraint}, the key 
+Start by considering the constraint in equation \ref{prod-constraint}, the key 
 component simplification of $P/F$ seen in equation \ref{ppf-key}, and the number
-of tails stages $N_T$.  As call to SymPy's \texttt{solve()} function rearranges the 
+of tails stages $N_T$.  A call to SymPy's \texttt{solve()} function rearranges the 
 constraint to reveal the closed form solution $N_T(N_P, M^*)$:
 \begin{equation}
 \begin{array}{lcl}
@@ -411,13 +412,13 @@ N_T & = & \left[- M^{*} N_{P} \log{\left (\alpha \right )} - M^{*} \log{\left (\
 \end{array}
 \label{nt_closed_full}
 \end{equation}
-While equation \ref{nt_closed_full} is successfully only a function of known 
-parameters and $N_P$ and $M^*$, it is not an ideal expression.  This is because both 
+While equation \ref{nt_closed_full} is only a function of known 
+parameters, $N_P$, and $M^*$, it is not an ideal expression.  This is because both 
 $M^*$ and $N_P$ each appear five times in this closed form solution.  Thus if this 
 were substituted into the original MARC system to eliminate $N_T$, the number of 
 instances of independent variables would grow by a ratio of 10:1.    
 
-To decrease the substitution ratio, and simplify the expression, equation 
+To decrease the substitution ratio and simplify the expression, equation 
 \ref{nt_closed_full} may be rewritten (by hand) as the following:
 \begin{equation}
 \begin{array}{lcl}
@@ -435,16 +436,30 @@ expression and $M^*$ is reduced to three occurrences.
 \begin{figure}[htpb]
 \begin{center}
 \includegraphics[scale=0.5]{nt_closed.eps}
-\caption{$N_T(N_P, M^*)$ for a Natural Uranium Cascade with $N_P\in[1,50]$ and $M^*=236.547$.}
+\caption{$N_T(N_P, M^*)$ for a natural uranium cascade with $N_P\in[1,50]$ and 
+    $M^*=236.547$.}
 \label{nt_closed_fig}
 \end{center}
 \end{figure}
 
 Figure \ref{nt_closed_fig} confirms that the closed form $N_T(N_P, M^*)$ is correct.
 For an increasing number of enriching stages, the stripping stages must also 
-increase to maintain the proper matched abundance flow rates.
+increase to maintain the proper mass flow rates.
+This figure was computed 
+with the feed concentrations seen in Table \ref{feed_nu} and the following other 
+cascade parameters: $M^*=236.547$, $N_P^0=30$, $N_T^0=10$, $\alpha=1.05$, 
+\nuc{U}{235} as the \jth key component, \nuc{U}{238} as the \kth key component, 
+$x_j^P=0.055$, and $x_j^T=0.0025$.
 Therefore, equation \ref{nt_closed} allows for the elimination of $N_T$ as an 
-independent variable when computing $L/F$ and $N_P$.
+independent variable when computing $L/F$ and $N_P$.  
+
+\begin{table}[htbp]
+\begin{center}
+\caption{Feed flow concentrations for a natural uranium cascade.}
+\include{feed_nu}
+\end{center}
+\label{feed_nu}
+\end{table}
 
 Next, examine the MARC constraint in equation \ref{tail-constraint}.  This states that
 the tails concentration of the \jth key component that is computed by the concentration
@@ -457,8 +472,8 @@ f(N_P,M^*) =
                                            {\beta_j^{N_T(N_P,M^*)+1} - \beta_j^{-N_P}} \right)
 - \left(x_j^T\cdot\sum_i^{I} x_i^T\right) \equiv 0
 \end{equation}
-Here, like above with $P/F$, the key component simplification of $T/F$ in equation
-\ref{tpf-key} is used.
+Here again, like with $P/F$ above, the key component simplification of $T/F$ in 
+equation \ref{tpf-key} is used.
 
 Ideally, the terms in $f(N_P,M^*)$ would be rearrangeable into a closed form expression
 for either $N_P$ or $M^*$.  Since there are fewer instances of $N_P$, the number of
@@ -474,7 +489,7 @@ Even this overly simplified representation cannot be rearranged as is to give a
 closed form function for $N_P$.  It may be possible to achieve such an expression 
 by making logarithm approximations, such as $\log(a) \approx a - 1$ for $a\approx1$.  
 This could 
-eliminate some of the multiply nested powers of $N_P$ which would potentially yield
+eliminate the nested powers of $N_P$ which would potentially yield
 a closed form representation.  However, since the $\log$ terms appear in the exponent
 of $\alpha$, any error induced by these approximations would be compounded 
 unnecessarily.  Therefore this line of inquiry was not pursued further.
@@ -485,7 +500,7 @@ unnecessarily.  Therefore this line of inquiry was not pursued further.
 \caption{$f(N_P, M^*)$ over the range of possible $N_P$ and $M^*$ values.  The black
 contour line represents $f(N_P, M^*)=0$ and is the solution to the MARC constraint
 in equation \ref{tail-constraint}. 
-Data was computed for a typical natural uranium cascade.}
+Data was computed for a typical natural uranium fed cascade.}
 \label{np_constraint_fig}
 \end{center}
 \end{figure}
@@ -494,7 +509,7 @@ Instead, $f(N_P,M^*)$ was plotted as an unconstrained function of its two remain
 independent variables to produce the heat map that may be seen in Figure 
 \ref{np_constraint_fig}.  Since the range of $f$ contains both positive and negative
 values, it follows that there must be some combination of $(N_P,M^*)$ values which
-satisfy the original MARC constraint.  This set is displayed on Figure 
+satisfy the original MARC constraint.  This $f(N_P, M^*)=0$ set is displayed on Figure 
 \ref{np_constraint_fig} as the black contour.  While this contour could hypothetically
 be used itself to provide a closed form $N_P(M^*)$ equation, such a strategy would 
 be grossly inefficient.  This is because a large number of $f$ points must be 
@@ -502,14 +517,14 @@ numerically evaluated, and then lineally interpolated, to fit such a curve with
 respectable accuracy.
 
 Rather, by inspection of Figure \ref{np_constraint_fig}, the $f(N_P, M^*)=0$ curve 
-would be well fit by a second order polynomial -- at least on the domain of interest.
+would be well fit by a second order polynomial on the domain of interest.
 That the constraint follows this form is not obvious from either equation 
-\ref{tail-constraint} or $f(N_P,M^*)$.  Once again, however, the coefficients in 
-such a second order polynomial model cannot be known numerically and must be 
-expressed symbolically in terms of known and independent variables 
+\ref{tail-constraint} or $f(N_P,M^*)$.  The coefficients in 
+such a second order polynomial model cannot be precomputed  numerically and must be 
+expressed symbolically in terms of known parameters and independent variables 
 \cite{Sacks:1989:ASS:1623755.1623823}.
 
-On these grounds, represent $f$ by its second order Taylor series expansion with
+On this basis, represent $f$ by its second order Taylor series expansion with
 respect to $N_P$ close to the initial guess $N_P^0$.
 \begin{equation}
 \begin{array}{rcl}
@@ -551,20 +566,22 @@ $N_P(M^*)$.
 (a) & (b) \\
 \end{tabular}
 \caption{$N_T(M^*)$ such that $f(N_P,M^*)=0$.  (a): The quadratic solution to a
-Taylor series approximation. Truncated when negative discriminants would result in
-a complex solution.  (b): The equation from (a) as a dashed black line overlaid on top
-of Figure \ref{np_constraint_fig}.  The solid black line is a linearly interpolated
-contour for $f(N_P, M^*)=0$. (a) \& (b) show that $N_P(M^*)$ is an accurate 
-approximation near the initial guesses $N_P^0$ and $M^*=(M_j+M_k)/2$, but less 
-precise far from this point. Data was computed for a typical natural uranium cascade.}
+Taylor series approximation. This curve is truncated when negative discriminants 
+would result in a complex solution.  (b): The equation from (a) as a dashed black 
+line overlaid on top of Figure \ref{np_constraint_fig}.  The solid black line is a 
+linearly interpolated contour for $f(N_P, M^*)=0$. The two sub-figures show that 
+$N_P(M^*)$ is an accurate  approximation near the initial guesses $N_P^0$ and 
+$M_0^*=(M_j+M_k)/2$, but less precise far from this point. Data was computed for 
+a typical natural uranium fed cascade.}
 \label{np_closed_fig}
 \end{center}
 \end{figure}
 
 Figure \ref{np_closed_fig} plots the closed form solution to $N_P(M^*)$ both (a)
-on its own and (b) overlaid onto the above heat map.  This shows that the 
+on its own and (b) overlaid onto the heat map in Figure \ref{np_constraint_fig}.  
+This shows that the 
 quadratic solution to the second order Taylor series approximation is an astoundingly 
-accurate one when close to the initial conditions $N_P=N_P^0$ and $M^*=(M_j+M_k)/2$.
+accurate one when close to the initial conditions $N_P=N_P^0$ and $M_0^*=(M_j+M_k)/2$.
 Naturally being only second order, this approximation breaks down farther away from 
 the initial guess.  For greater values of $N_P$ and $M^*$, the curve begins to 
 over-predict the result until the point that the discriminant becomes negative, the
@@ -587,7 +604,8 @@ the initial conditions.  Moreover, both equations \ref{nt_closed} \& \ref{np_clo
 may be substituted into equation \ref{ltot-over-feed} to obtain 
 $L/F(N_P(M^*),N_T(M^*),M^*)=L/F(M^*)$ solely as a function of $M^*$.  Thus
 $L/F(M^*)$ may be minimized using any standard one-dimensional algorithm.
-Figure \ref{loverf_fig} shows $L/F(M^*)$ for the full domain of $M*$, demonstrating 
+
+Figure \ref{loverf_fig} shows $L/F(M^*)$ for the full domain of $M^*$, demonstrating 
 that this symbolic methodology computes the correct bowl-like shape.  Note that while 
 this method is successful, the number of operations in the final form of $L/T$ may be 
 in the thousands to millions depending on how many components are included in the 
