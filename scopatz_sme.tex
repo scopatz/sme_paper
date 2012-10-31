@@ -48,14 +48,15 @@
 
 % Text of abstract
 \begin{abstract}
-Matched abundance ratio cascades are a well-known way of computing concentrations
-and flow rates for multicomponent enrichment.  Due to the form of the system 
-of equations, these are often solved using standard constrained numerical 
+Matched abundance ratio cascades are a well-known method for computing concentrations
+and flow rates in multicomponent enrichment scenario.  Due to the form of this system 
+of equations, they are often solved using standard constrained numerical 
 optimizers.  Here a symbolic mathematics library (SymPy) is coupled with 
-code generation techniques to produce a multicomponent solver.  This symbolic 
-solver is demonstrated to be between 20 - 300 times faster than the numeric version.
-Additionally, it is also shown to have at least the same, and 
-occasionally more, accuracy as the corresponding numeric optimizer.  The 
+code generation techniques to produce a novel multicomponent solver.  This symbolic 
+solver is demonstrated to be between 20 - 300 times faster than the equivalent 
+numeric algorithm.
+Additionally, it is also shown to have at least the same -- and 
+occasionally more -- accuracy than the corresponding numeric optimizer.  The 
 symbolic solver implementation is free \& open source software and is available as 
 part of the PyNE project.
 \end{abstract}
@@ -76,26 +77,37 @@ part of the PyNE project.
 \section{Introduction}
 \label{sec:intro}
 
-A variety of symbolic mathematics software tools exist such as 
+The matched abundance ratio equations which are used to compute concentrations and 
+flow rates through a multicomponent enrichment cascade contain a number of terms 
+proportional to the number components.  While the number of components may be 
+handled elegantly mathematically, increased numbers of terms for increased numbers
+of components penalizes anyone (human or computer) actually performing the 
+calculation.  However, 
+symbolic expression codes are capable of closely matching the original 
+mathematical repreresentation of the cascade equations.
+
+A variety of symbolic mathematics software tools exist. Examples include  
 Mathematica \cite{Wolfram2008}, Maple \cite{Maple16},  Maxima \cite{Maxima5}, 
 and SymPy \cite{SymPy2012}.  These codes excel at abstract representation and 
 manipulation of mathematical symbols.  Even complicated operators such as 
-differential and integration may be represented or applied as desired by the 
-users.  Therefore solving systems of equations with symbolic computational tools
+differentiation and integration may be represented or applied as desired by the 
+user.  Therefore solving systems of equations with symbolic computational tools
 has been possible since the 1980s.
 
-However where such codes tend to fall short is during numeric evaluation of 
-their symbolic expressions.  While acceptable for small to medium numbers of 
+Where such codes tend to fall short is during numeric evaluation of 
+their symbolic expressions.  While acceptable performance is seen 
+for small to medium numbers of 
 operations, they have difficulty scaling to large computations.  Moreover, 
 numeric, vectorized, or compiled expressions will always be executed faster
-by the processor.  Part of this may be due the symbolic library evaluating 
+by the processor.  Part of the blame may lie with the fact that the some symbolic 
+libraries evaluate their 
 expressions with arbitrarily large floating point precision.  (Numeric libraries
 typically deal in fixed precision, normally 64-bits on modern systems.)  However, 
 float evaluation of a symbolic expression is more likely slow because an entire 
 tree of sub-expressions must be walked and evaluated to produce the final result.
 
 Slow numeric evaluation is what prevents symbolic tools from being used at a 
-production level.  Rather they fill the niche of demonstrating that a new
+production level.  Rather such tools fill the niche of demonstrating that a new
 method works prior to writing a numeric implementation.  To aid in this 
 process some symbolic libraries, such as Mathematica and SymPy, now include
 code generation features.  These routines will convert symbolic expressions into
@@ -103,26 +115,30 @@ C, Fortran, or Python code.  For Mathematica, this is still not a perfect soluti
 because the generated code may call back to the symbolic library for certain 
 sub-expressions.
 
-Still, code generation provides an interesting opportunity. It enables a workflow 
-where the symbolic expressions for a system of equations are manipulated and solved, 
+Still, code generation form symbolic expressions provides an interesting opportunity. 
+It enables a workflow 
+where the symbolic expressions for a system of equations are manipulated, solved, 
 reduced to a minimal form, used to produced machine code, and finally executed by
 the user.  Since only this last step is present at run time, everything else in this
-pipeline is a pre-processing step.  While this pre-processing might be computationally
-expensive it will not affect the final run times.
+pipeline is effectively a pre-processing step.  While this pre-processing might be 
+computationally expensive it will not affect the final run times.  If this
+process is implemented correctly, and efficient code is generated, than these 
+final run times may be quite fast.
 
 Of interest are the matched abundance ratio cascade (MARC) equations for 
 multicomponent separations originally described by de la Garza \cite{DelaGarza1969}.
 This system may be solved using a constrained numerical optimizer 
-\cite{doi:10.1080/01496391003793884,pyne:enrichment}.  These equations make for 
+\cite{doi:10.1080/01496391003793884,pyne:enrichment}.  These equations make for an
 exciting challenge since some of the independent variables cannot be exactly
 expressed as a closed form function of the other independent variables. 
-Furthermore, approximating such closed solutions is typically not done because 
-there are too many terms to mange by hand.  Thus, numeric optimizer solutions 
-to the MARC equations solve for the independent variables simultaneously.
+Furthermore, closed form approximations are typically not used because 
+there are too many terms to mange by hand.  Thus, numeric optimizers have been used 
+to solve the MARC equations for the all independent variables simultaneously.
 
 Alternatively, a symbolic mathematics library is able to handle expressions 
 with many orders of magnitude more terms than a human.  Therefore it should be 
-possible to perform variable substitution and elimination in the MARC system.
+possible use closed form approximations 
+perform variable substitution and elimination in the MARC system.
 Coupled with code generation techniques, this paper explores symbolic solutions 
 that are at least as accurate and have faster execution times than either
 customized or off-the-shelf numerical solvers.
