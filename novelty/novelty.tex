@@ -1,0 +1,45 @@
+\documentclass[12pt]{article}
+
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+
+\fancyhead[L]{Anthony Scopatz}
+\fancyhead[R]{\today}
+\fancyfoot[L]{Novelty Statement}
+\fancyfoot[C]{}
+\fancyfoot[R]{\thepage}
+
+\begin{document}
+\begin{center}
+\section*{Novelty Statement}
+\end{center}
+
+The work presented in submission entitled ``Symbolic Multicomponent Enrichment for 
+Matched Abundance Ratio Cascades'' is new and novel primarily because it takes 
+a radical approach to solving the matched abundance ratio cascade (MARC) equations.  
+This system of equations has been known for decades, since de la Garza in the 1960s.
+Typically, they are solved using numerical optimization techniques.  Some work
+has even gone into the characterization of these different solvers (Song, et al.).
+
+Here, a symbolic mathematics library (SymPy) was used to solve this system
+of equations by variable substitution and elimination.  Since some independent 
+variables cannot be expressed exactly in a closed form way, as symbolic approximation
+to the closed form solution was used.  Due to the number of terms in this
+approximation a symbolic math library was needed to handle the resultant expression.
+This is why the representation of the MARC system used here was not previously
+discovered.
+
+Furthermore, while symbolic solutions are typically quite slow, the solver here 
+was coupled with a custom C-code generator.  This enables the cascade solutions to be 
+computed 20 - 300 times faster than other nominal numerical optimizers. 
+Additionally, it is shown that the solution provided this symbolic solver is 
+just as accurate as any numeric solver and matches results published by many 
+other groups.
+
+Thus this work represents a new, significantly faster mechanism for computing the 
+MARC equations using novel closed form representations of many of the independent 
+variables.  Furthermore, the innovative symbolic to machine code pipeline that 
+enables this solution was created solely to aid in this calculation.
+
+\end{document}
