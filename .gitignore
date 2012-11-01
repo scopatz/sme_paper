@@ -12,3 +12,5 @@
 *.spl
 *.zip
 *.xml
+cover/*.png
+cover/*.eps
